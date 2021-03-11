@@ -71,7 +71,10 @@ function AddPostDialog({ media, handleClose }) {
 
   function handleCheetButton(e) {
     e.preventDefault();
-    window.open("http://mdcheatsheet.com/", "_blank");
+    window.open(
+      "https://dev.to/ankushsinghgandhi/markdown-cheat-sheet-1il5",
+      "_blank"
+    );
   }
 
   function handleImage(e) {
