@@ -5,7 +5,7 @@ import { useAddPostDialogStyles } from "../../styles";
 import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-
+import copy from "copy-to-clipboard";
 import {
   Dialog,
   AppBar,
@@ -83,7 +83,7 @@ function AddPostDialog({ media, handleClose }) {
     e.preventDefault();
     let urlImage = await handleImageUpload(e.target.files[0]);
     shortUrl.short(urlImage, (err, site) => {
-      console.log(site);
+      copy(site);
     });
     setSnackBar(true);
   }
@@ -105,12 +105,12 @@ function AddPostDialog({ media, handleClose }) {
             MdCheetSheat
           </Button>
           <input
-            id="fileInput"
             type="file"
             style={{ display: "none" }}
             ref={addImgRef}
             onChange={handleAddImage}
           />
+
           <Button
             color="primary"
             className={classes.share}
