@@ -144,6 +144,7 @@ export const GET_POST = gql`
       user {
         id
         username
+        profile_image
       }
     }
   }
@@ -156,6 +157,50 @@ export const GET_FEED = gql`
       where: { user_id: { _in: $feedIds }, created_at: { _lt: $lastTimestamp } }
       order_by: { created_at: desc }
     ) {
+      id
+      caption
+      created_at
+      media
+      location
+      user {
+        id
+        username
+        name
+        profile_image
+      }
+      likes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      likes {
+        id
+        user_id
+      }
+      saved_posts {
+        id
+        user_id
+      }
+      comments_aggregate {
+        aggregate {
+          count
+        }
+      }
+      comments(order_by: { created_at: desc }, limit: 2) {
+        id
+        content
+        created_at
+        user {
+          username
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FEED_ALL = gql`
+  query getFeedAll {
+    posts(order_by: { created_at: desc }) {
       id
       caption
       created_at

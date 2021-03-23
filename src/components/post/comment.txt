@@ -1,0 +1,67 @@
+<div>
+          {!showPreview && (
+            <TextField
+              placeholder="Type your comment here... Markdown is supported"
+              multiline
+              rows={5}
+              rowsMax={Infinity}
+              style={{ width: "100%" }}
+              variant="outlined"
+              // InputProps={{ disableUnderline: true }}
+              onChange={(e) => setValue(e.target.value)}
+              defaultValue={value}
+              color="primary"
+            />
+          )}
+        </div>
+        <div>
+          {showPreview && (
+            <ReactMarkdown
+              source={value}
+              escapeHtml={false}
+              className="markdown"
+              renderers={renderers}
+            />
+          )}
+        </div>
+        <div>
+          <Button
+            color="primary"
+            style={{ marginRight: "800px" }}
+            onClick={handlePreview}
+            disabled={!value.trim()}
+          >
+            Preview
+          </Button>
+          <Button color="primary" disabled={!value.trim()}>
+            Post
+          </Button>
+        </div>
+        <div style={{ width: "100%" }}>
+          {/* <div className="comment-card">
+            <div className="avatar">
+              <Avatar
+                src={comments?.user?.profile_image}
+                alt="avatar"
+                variant="circular"
+              />
+            </div>
+            <div className="author-details">
+              <Typography variant="caption">happykimi</Typography>
+              <Typography variant="caption">June 13, 2018 10:27 AM</Typography>
+            </div>
+          </div>
+          <div className="comment-md">
+            <ReactMarkdown
+              source={comments.content}
+              escapeHtml={false}
+              className="markdown"
+              renderers={renderers}
+            />
+          </div>
+          <Divider /> */}
+          {comments.map((comment) => (
+            <UserComment key={comment.id} comment={comment} />
+          ))}
+        </div>
+        {/* <div style={{ padding: "15px", margin: "80px 0px" }}></div> */}

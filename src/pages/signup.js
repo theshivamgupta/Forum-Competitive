@@ -144,7 +144,7 @@ function SignUpPage() {
                   maxLength: 20,
                   validate: async (input) => await validateUsername(input),
                   // accept only lowercase/uppercase letters, numbers, periods and underscores
-                  pattern: /^[a-zA-Z0-9_.]*$/,
+                  pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/,
                 })}
                 fullWidth
                 variant="filled"

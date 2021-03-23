@@ -1,6 +1,5 @@
 import React from "react";
 import { useFeedPostStyles } from "../../styles";
-import UserCard from "../shared/UserCard";
 import {
   MoreIcon,
   CommentIcon,
@@ -9,20 +8,16 @@ import {
   LikeIcon,
   RemoveIcon,
   SaveIcon,
+  LoadingIcon,
 } from "../../icons";
 import { Link } from "react-router-dom";
-import {
-  Typography,
-  Button,
-  Hidden,
-  Divider,
-  TextField,
-} from "@material-ui/core";
+import { Button, Divider, TextField } from "@material-ui/core";
 import HTMLEllipsis from "react-lines-ellipsis/lib/html";
-import FollowSuggestions from "../shared/FollowSuggestions";
-import OptionsDialog from "../shared/OptionsDialog";
 import { formatDateToNow } from "../../utils/formatDate";
-import Img from "react-graceful-image";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import "./Post.css";
+// import Img from "react-graceful-image";
 import {
   SAVE_POST,
   UNSAVE_POST,
@@ -31,137 +26,72 @@ import {
   CREATE_COMMENT,
 } from "../../graphql/mutations";
 import { GET_FEED } from "../../graphql/queries";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { UserContext } from "../../App";
-
+import { GET_POST } from "../../graphql/queries";
+import OptionsDialog from "../shared/OptionsDialog";
+import UserCard from "../shared/UserCard";
+import FollowSuggestions from "../shared/FollowSuggestions";
 function FeedPost({ post, index }) {
   const classes = useFeedPostStyles();
-  const [showCaption, setCaption] = React.useState(false);
+  // const [showCaption, setCaption] = React.useState(false);
   const [showOptionsDialog, setOptionsDialog] = React.useState(false);
+  const { currentUserId } = React.useContext(UserContext);
   const {
     id,
     media,
     likes,
     likes_aggregate,
     saved_posts,
-    location,
     user,
     caption,
     comments,
     comments_aggregate,
     created_at,
   } = post;
+
+  const postId = id;
+
+  const variables = { postId };
+  const { data, loading } = useQuery(GET_POST, { variables });
+  if (loading) return <LoadingIcon />;
+
   const showFollowSuggestions = index === 1;
   const likesCount = likes_aggregate.aggregate.count;
-  const commentsCount = comments_aggregate.aggregate.count;
+  const isAlreadyLiked = likes.some(({ user_id }) => user_id === currentUserId);
+
+  const Icon = isAlreadyLiked ? ThumbUpAltIcon : ThumbUpAltOutlinedIcon;
 
   return (
     <>
       <article
-        className={classes.article}
+        // className={classes.article}
+        className="container-container"
         style={{ marginBottom: showFollowSuggestions && 30 }}
       >
-        {/* Feed Post Header */}
-        <div className={classes.postHeader}>
-          <UserCard user={user} location={location} />
-          <MoreIcon
-            className={classes.moreIcon}
-            onClick={() => setOptionsDialog(true)}
-          />
-        </div>
-        {/* Feed Post Image */}
-        <div>
-          <Img src={media} alt="Post media" className={classes.image} />
-        </div>
-        {/* Feed Post Buttons */}
-        <div className={classes.postButtonsWrapper}>
-          <div className={classes.postButtons}>
-            <LikeButton likes={likes} postId={id} authorId={user.id} />
+        <div className="container">
+          {/* <Link to={`/${data?.posts_by_pk?.user?.username}`}> */}
+          <div className="image-container">
+            <UserCard user={user} />
+          </div>
+          {/* </Link> */}
+          <div className="content-container">
             <Link to={`/p/${id}`}>
-              <CommentIcon />
-            </Link>
-            <ShareIcon />
-            <SaveButton savedPosts={saved_posts} postId={id} />
-          </div>
-          <Typography className={classes.likes} variant="subtitle2">
-            <span>{likesCount === 1 ? "1 like" : `${likesCount} likes`}</span>
-          </Typography>
-          <div className={showCaption ? classes.expanded : classes.collapsed}>
-            <Link to={`/${user.username}`}>
-              <Typography
-                variant="subtitle2"
-                component="span"
-                className={classes.username}
-              >
-                {user.username}
-              </Typography>
-            </Link>
-            {showCaption ? (
-              <Typography
-                variant="body2"
-                component="span"
-                dangerouslySetInnerHTML={{ __html: caption }}
-              />
-            ) : (
-              <div className={classes.captionWrapper}>
-                <HTMLEllipsis
-                  unsafeHTML={caption}
-                  className={classes.caption}
-                  maxLine="0"
-                  ellipsis="..."
-                  basedOn="letters"
-                />
-                <Button
-                  className={classes.moreButton}
-                  onClick={() => setCaption(true)}
-                >
-                  more
-                </Button>
+              <div className="title-container">{media}</div>
+              <div className="time-container">
+                {formatDateToNow(created_at)}
               </div>
-            )}
+            </Link>
           </div>
-          <Link to={`/p/${id}`}>
-            <Typography
-              className={classes.commentsLink}
-              variant="body2"
-              component="div"
-            >
-              View all {commentsCount} comments
-            </Typography>
-          </Link>
-          {comments.map((comment) => (
-            <div key={comment.id}>
-              <Link to={`/${comment.user.username}`}>
-                <Typography
-                  variant="subtitle2"
-                  component="span"
-                  className={classes.commentUsername}
-                >
-                  {comment.user.username}
-                </Typography>{" "}
-                <Typography variant="body2" component="span">
-                  {comment.content}
-                </Typography>
-              </Link>
-            </div>
-          ))}
-          <Typography color="textSecondary" className={classes.datePosted}>
-            {formatDateToNow(created_at)}
-          </Typography>
+          <div className="like-container">
+            {/* <img src={} alt="like" className="image" /> */}
+            <Icon className="image" />
+            {/* <LikeButton likes={likes} postId={id} authorId={user.id} /> */}
+
+            <span>{likesCount === 1 ? "1 like" : `${likesCount} likes`}</span>
+          </div>
         </div>
-        <Hidden xsDown>
-          <Divider />
-          <Comment postId={id} />
-        </Hidden>
       </article>
-      {showFollowSuggestions && <FollowSuggestions />}
-      {showOptionsDialog && (
-        <OptionsDialog
-          authorId={user.id}
-          postId={id}
-          onClose={() => setOptionsDialog(false)}
-        />
-      )}
     </>
   );
 }
@@ -171,7 +101,8 @@ function LikeButton({ likes, postId, authorId }) {
   const { currentUserId, feedIds } = React.useContext(UserContext);
   const isAlreadyLiked = likes.some(({ user_id }) => user_id === currentUserId);
   const [liked, setLiked] = React.useState(isAlreadyLiked);
-  const Icon = liked ? UnlikeIcon : LikeIcon;
+  // const Icon = liked ? UnlikeIcon : LikeIcon;
+  const Icon = isAlreadyLiked ? ThumbUpAltIcon : ThumbUpAltOutlinedIcon;
   const className = liked ? classes.liked : classes.like;
   const onClick = liked ? handleUnlike : handleLike;
   const [likePost] = useMutation(LIKE_POST);
@@ -216,7 +147,7 @@ function LikeButton({ likes, postId, authorId }) {
     unlikePost({ variables, update: handleUpdate });
   }
 
-  return <Icon className={className} onClick={onClick} />;
+  return <Icon className="image" onClick={onClick} />;
 }
 
 function SaveButton({ postId, savedPosts }) {

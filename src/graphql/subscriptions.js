@@ -59,6 +59,11 @@ export const GET_POST = gql`
           count
         }
       }
+      comments_aggregate {
+        aggregate {
+          count
+        }
+      }
       likes {
         id
         user_id

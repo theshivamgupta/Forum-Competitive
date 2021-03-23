@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Avatar, Typography } from "@material-ui/core";
 import { defaultUser } from "../../data";
 
-function UserCard({ user = defaultUser, avatarSize = 44, location }) {
+function UserCard({ user = defaultUser, avatarSize = 44 }) {
   const classes = useUserCardStyles({ avatarSize });
   const { username, name, profile_image } = user;
 
@@ -27,9 +27,7 @@ function UserCard({ user = defaultUser, avatarSize = 44, location }) {
           color="textSecondary"
           variant="body2"
           className={classes.typography}
-        >
-          {location || name}
-        </Typography>
+        ></Typography>
       </div>
     </div>
   );

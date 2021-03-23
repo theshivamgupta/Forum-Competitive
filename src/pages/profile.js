@@ -135,6 +135,9 @@ function ProfileNameSection({ user, isOwner, handleOptionsMenuClick }) {
         variant="contained"
         color="primary"
         className={classes.button}
+        style={{
+          fontSize: "12px",
+        }}
       >
         Follow Back
       </Button>

@@ -11,7 +11,7 @@ import {
   Zoom,
 } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
-import logo from "../../images/logo.png";
+import cpblog from "../../images/cpblog.png";
 import {
   LoadingIcon,
   AddIcon,
@@ -67,7 +67,7 @@ function Logo() {
     <div className={classes.logoContainer}>
       <Link to="/">
         <div className={classes.logoWrapper}>
-          <img src={logo} alt="Instagram" className={classes.logo} />
+          <img src={cpblog} alt="Cp-blog" className={classes.logo} />
         </div>
       </Link>
     </div>
@@ -164,9 +164,7 @@ function Links({ path }) {
   const classes = useNavbarStyles();
   const [showTooltip, setTooltip] = React.useState(hasNotifications);
   const [showList, setList] = React.useState(false);
-  const [media, setMedia] = React.useState(null);
   const [showAddPostDialog, setAddPostDialog] = React.useState(false);
-  const inputRef = React.useRef();
 
   React.useEffect(() => {
     const timeout = setTimeout(handleHideTooltip, 5000);
@@ -188,12 +186,8 @@ function Links({ path }) {
   }
 
   function openFileInput() {
-    inputRef.current.click();
-  }
-
-  function handleAddPost(event) {
-    setMedia(event.target.files[0]);
     setAddPostDialog(true);
+    // inputRef.current.click();
   }
 
   function handleClose() {
@@ -210,16 +204,8 @@ function Links({ path }) {
         />
       )}
       <div className={classes.linksWrapper}>
-        {showAddPostDialog && (
-          <AddPostDialog media={media} handleClose={handleClose} />
-        )}
+        {showAddPostDialog && <AddPostDialog handleClose={handleClose} />}
         {/* <Hidden xsDown> */}
-        <input
-          type="file"
-          style={{ display: "none" }}
-          ref={inputRef}
-          onChange={handleAddPost}
-        />
         <AddIcon onClick={openFileInput} />
         {/* </Hidden> */}
         <Link to="/">{path === "/" ? <HomeActiveIcon /> : <HomeIcon />}</Link>

@@ -1,16 +1,31 @@
 import React from "react";
 import { useNotificationListStyles } from "../../styles";
 // import { defaultNotifications } from "../../data";
-import { Grid, Avatar, Typography } from "@material-ui/core";
+import { Grid, Avatar, Typography, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import FollowButton from "../shared/FollowButton";
 import useOutsideClick from "@rooks/use-outside-click";
 import { useMutation } from "@apollo/client";
 import { CHECK_NOTIFICATIONS } from "../../graphql/mutations";
 import { formatDateToNowShort } from "../../utils/formatDate";
+import { deepOrange } from "@material-ui/core/colors";
+
+const useColor = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+  },
+}));
 
 function NotificationList({ handleHideList, notifications, currentUserId }) {
   const classes = useNotificationListStyles();
+  const colorClass = useColor();
   const listContainerRef = React.useRef();
   useOutsideClick(listContainerRef, handleHideList);
   const [checkNotifications] = useMutation(CHECK_NOTIFICATIONS);
@@ -62,8 +77,11 @@ function NotificationList({ handleHideList, notifications, currentUserId }) {
             </div>
             <div>
               {isLike && (
-                <Link to={`/p/${notification.post.id}`}>
-                  <Avatar src={notification.post.media} alt="post cover" />
+                <Link to={`/p/${notification?.post?.id}`}>
+                  <Avatar className={colorClass.orange}>
+                    {notification.post?.media[0]}
+                  </Avatar>
+                  {/* <Avatar src={notification.post?.media} alt="post cover" /> */}
                 </Link>
               )}
               {isFollow && <FollowButton id={notification.user.id} />}

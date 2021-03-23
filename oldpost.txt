@@ -1,0 +1,64 @@
+<div className={classes.postContainer}>
+      <article className={classes.article}>
+        {/* Post Header */}
+        <div className={classes.postHeader}>
+          <UserCard user={user} avatarSize={32} />
+          <MoreIcon
+            className={classes.moreIcon}
+            onClick={() => setOptionsDialog(true)}
+          />
+        </div>
+        <Divider />
+        {/* Post Image */}
+        <div className={classes.postImage}>
+          {/* <Img src={media} alt="Post media" className={classes.image} /> */}
+          <Typography variant="h6">{media}</Typography>
+        </div>
+        {/* Post Buttons */}
+        <div className={classes.postButtonsWrapper}>
+          <div className={classes.postButtons}>
+            <LikeButton likes={likes} postId={id} authorId={user.id} />
+            <Link to={`/p/${id}`}>
+              <CommentIcon />
+            </Link>
+            <ShareIcon />
+            <SaveButton savedPosts={saved_posts} postId={id} />
+          </div>
+          <Typography className={classes.likes} variant="subtitle2">
+            <span>{likesCount === 1 ? "1 like" : `${likesCount} likes`}</span>
+          </Typography>
+          <div
+            style={{
+              overflowY: "scroll",
+              padding: "16px 12px",
+              height: "100%",
+            }}
+          >
+            <AuthorCaption
+              user={user}
+              createdAt={created_at}
+              caption={caption}
+            />
+            {comments.map((comment) => (
+              <UserComment key={comment.id} comment={comment} />
+            ))}
+          </div>
+          <Typography color="textSecondary" className={classes.datePosted}>
+            {formatPostDate(created_at)}
+          </Typography>
+          <Hidden xsDown>
+            <div className={classes.comment}>
+              <Divider />
+              <Comment postId={id} />
+            </div>
+          </Hidden>
+        </div>
+      </article>
+      {showOptionsDialog && (
+        <OptionsDialog
+          postId={id}
+          authorId={user.id}
+          onClose={() => setOptionsDialog(false)}
+        />
+      )}
+    </div>

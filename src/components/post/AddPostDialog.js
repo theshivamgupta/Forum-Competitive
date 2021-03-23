@@ -17,7 +17,10 @@ import {
   Avatar,
   Snackbar,
   Slide,
+  TextField,
 } from "@material-ui/core";
+import snarkdown from "snarkdown";
+import DOMPurify from "dompurify";
 import { ArrowBackIos } from "@material-ui/icons";
 import { UserContext } from "../../App";
 import serialize from "../../utils/serialize";
@@ -35,11 +38,12 @@ const initialValue = [
   },
 ];
 
-function AddPostDialog({ media, handleClose }) {
+function AddPostDialog({ handleClose }) {
   const classes = useAddPostDialogStyles();
   const { me, currentUserId } = React.useContext(UserContext);
   const editor = React.useMemo(() => withReact(createEditor()), []);
   const [value, setValue] = React.useState(initialValue);
+  const [title, setTitle] = React.useState("");
   const [location, setLocation] = React.useState("");
   // const [image, setImage] = React.useState(null);
   const [showSnackBar, setSnackBar] = React.useState(false);
@@ -57,12 +61,16 @@ function AddPostDialog({ media, handleClose }) {
 
   async function handleSharePost() {
     setSubmitting(true);
-    const url = await handleImageUpload(media);
+    // const url = await handleImageUpload(media);
+    const md = serialiseMd(value);
+    let html = snarkdown(md);
+    html = DOMPurify.sanitize(html);
+    console.log(html);
     const variables = {
       userId: currentUserId,
       location,
-      caption: serialize({ children: value }),
-      media: url,
+      caption: md,
+      media: title,
     };
     await createPost({ variables });
     setSubmitting(false);
@@ -89,6 +97,10 @@ function AddPostDialog({ media, handleClose }) {
       copy(site);
     });
     setSnackBar(true);
+  }
+
+  function handleTitle(e) {
+    setTitle(e.target.value);
   }
 
   return (
@@ -134,8 +146,23 @@ function AddPostDialog({ media, handleClose }) {
       </AppBar>
       <Divider />
 
+      <TextField
+        id="outlined-full-width"
+        label="Title"
+        style={{ padding: 7 }}
+        placeholder="Title to your query..."
+        fullWidth
+        margin="normal"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        variant="outlined"
+        onChange={handleTitle}
+      />
+
       <Paper className={classes.paper}>
         <Avatar src={me.profile_image} />
+
         <Slate
           editor={editor}
           value={value}
@@ -148,7 +175,7 @@ function AddPostDialog({ media, handleClose }) {
         >
           <Editable
             className={classes.editor}
-            placeholder="Write your caption..."
+            placeholder="Write your Title..."
             onKeyDown={(e) => {
               if (e.key === "enter") {
                 e.preventDefault();
@@ -157,11 +184,11 @@ function AddPostDialog({ media, handleClose }) {
             }}
           />
         </Slate>
-        <Avatar
+        {/* <Avatar
           src={URL.createObjectURL(media)}
           className={classes.avatarLarge}
           variant="square"
-        />
+        /> */}
       </Paper>
       <div
         className="nothing"
