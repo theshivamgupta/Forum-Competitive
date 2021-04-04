@@ -241,6 +241,17 @@ export const DELETE_POST = gql`
   }
 `;
 
+export const EDIT_LAST_LOGIN = gql`
+  mutation updateLastLogin($username: String!, $time: String!) {
+    update_users(
+      where: { username: { _eq: $username } }
+      _set: { last_login: $time }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
 /*
 
 CREATE_USER
