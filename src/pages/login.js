@@ -3,21 +3,26 @@ import { useLoginPageStyles } from "../styles";
 import SEO from "../components/shared/Seo";
 import {
   Card,
-  CardHeader,
   TextField,
   Button,
   Typography,
   InputAdornment,
+  Snackbar,
+  Hidden,
 } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import FacebookIconBlue from "../images/facebook-icon-blue.svg";
-import FacebookIconWhite from "../images/facebook-icon-white.png";
+import FacebookIconBlue from "../images/icons8-google.svg";
 import { AuthContext } from "../auth";
 import isEmail from "validator/lib/isEmail";
 import { useApolloClient } from "@apollo/client";
-import { GET_USER_EMAIL } from "../graphql/queries";
+import { GET_LAST_LOGIN, GET_USER_EMAIL } from "../graphql/queries";
 import { AuthError } from "./signup";
+import logo from "../images/logo.png";
+import blog from "../images/blog.jpg";
+import Alert from "@material-ui/lab/Alert";
+import "./login.css";
+import ForgotPassword from "./ForgotPassword";
 
 function LoginPage() {
   const classes = useLoginPageStyles();
@@ -31,7 +36,8 @@ function LoginPage() {
   const client = useApolloClient();
   // console.log({ client });
   const [error, setError] = React.useState("");
-
+  const [verifyError, setVerifyError] = React.useState(false);
+  const [forgetPass, setForgetPass] = React.useState(false);
   async function onSubmit({ input, password }) {
     try {
       setError("");
@@ -40,8 +46,19 @@ function LoginPage() {
         // console.log({ input });
       }
       // console.log({ data });
-      await logInWithEmailAndPassword(input, password);
-      setTimeout(() => history.push("/"), 0);
+      const data = await logInWithEmailAndPassword(input.userEmail, password);
+      if (!data?.user?.emailVerified) {
+        setVerifyError(true);
+        return;
+      }
+      console.log({ data });
+      setTimeout(
+        () =>
+          input.lastLogin === null
+            ? history.push(`/${input.userUsername}/firstLogin`)
+            : history.push("/"),
+        0
+      );
     } catch (error) {
       // console.error("Error logging in", error);
       handleError(error);
@@ -49,7 +66,7 @@ function LoginPage() {
   }
 
   function handleError(error) {
-    if (error.code.includes("auth")) {
+    if (error?.code?.includes("auth")) {
       setError(error.message);
     }
   }
@@ -60,105 +77,147 @@ function LoginPage() {
       query: GET_USER_EMAIL,
       variables,
     });
+    const res = await client.query({
+      query: GET_LAST_LOGIN,
+      variables,
+    });
     const userEmail = response.data.users[0]?.email || "no@email.com";
-    return userEmail;
+    const lastLogin = res?.data?.users[0]?.last_login || null;
+    const userUsername = res?.data?.users[0]?.username || null;
+    // const lastLogin = null;
+    return { userEmail, lastLogin, userUsername };
   }
 
   function togglePasswordVisibility() {
     setPasswordVisibility((prev) => !prev);
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setVerifyError(false);
+  };
+
+  function handleForgetPass(e) {
+    e.preventDefault();
+    setForgetPass((prev) => !prev);
+  }
+
   return (
     <>
       <SEO title="Login" />
-      <section className={classes.section}>
-        <article>
-          <Card className={classes.card}>
-            <CardHeader className={classes.cardHeader} />
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <TextField
-                name="input"
-                inputRef={register({
-                  required: true,
-                  minLength: 5,
-                })}
-                fullWidth
-                variant="filled"
-                label="Username, email, or phone"
-                margin="dense"
-                className={classes.textField}
-                autoComplete="username"
-              />
-              <TextField
-                name="password"
-                inputRef={register({
-                  required: true,
-                  minLength: 5,
-                })}
-                InputProps={{
-                  endAdornment: hasPassword && (
-                    <InputAdornment>
-                      <Button onClick={togglePasswordVisibility}>
-                        {showPassword ? "Hide" : "Show"}
-                      </Button>
-                    </InputAdornment>
-                  ),
-                }}
-                type={showPassword ? "text" : "password"}
-                fullWidth
-                variant="filled"
-                label="Password"
-                margin="dense"
-                className={classes.textField}
-                autoComplete="current-password"
-              />
-              <Button
-                disabled={!formState.isValid || formState.isSubmitting}
-                variant="contained"
-                fullWidth
-                color="primary"
-                className={classes.button}
-                type="submit"
-              >
-                Log In
-              </Button>
-            </form>
-            <div className={classes.orContainer}>
-              <div className={classes.orLine} />
-              <div>
-                <Typography variant="body2" color="textSecondary">
-                  OR
+      <Snackbar
+        open={verifyError}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleClose} severity="error" variant="filled">
+          Please Verify Your Account!
+        </Alert>
+      </Snackbar>
+      {!forgetPass && (
+        <div className="container">
+          <div>
+            <img src={logo} alt="logo" className="logo-container" />
+            <Hidden xsDown={true}>
+              <img src={blog} alt="Login Intro" className="image-container" />
+            </Hidden>
+          </div>
+          <section className={classes.section}>
+            <article>
+              <Card className={classes.card}>
+                {/* <CardHeader className={classes.cardHeader} /> */}
+                <Hidden xsDown>
+                  <img src={logo} alt="logo" style={{ width: "100%" }} />
+                </Hidden>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <TextField
+                    name="input"
+                    inputRef={register({
+                      required: true,
+                      minLength: 5,
+                    })}
+                    fullWidth
+                    variant="filled"
+                    label="Username, email, or phone"
+                    margin="dense"
+                    className={classes.textField}
+                    autoComplete="username"
+                  />
+                  <TextField
+                    name="password"
+                    inputRef={register({
+                      required: true,
+                      minLength: 5,
+                    })}
+                    InputProps={{
+                      endAdornment: hasPassword && (
+                        <InputAdornment>
+                          <Button onClick={togglePasswordVisibility}>
+                            {showPassword ? "Hide" : "Show"}
+                          </Button>
+                        </InputAdornment>
+                      ),
+                    }}
+                    type={showPassword ? "text" : "password"}
+                    fullWidth
+                    variant="filled"
+                    label="Password"
+                    margin="dense"
+                    className={classes.textField}
+                    autoComplete="current-password"
+                  />
+                  <Button
+                    disabled={!formState.isValid || formState.isSubmitting}
+                    variant="contained"
+                    fullWidth
+                    color="primary"
+                    className={classes.button}
+                    type="submit"
+                  >
+                    Log In
+                  </Button>
+                </form>
+                <div className={classes.orContainer}>
+                  <div className={classes.orLine} />
+                  <div>
+                    <Typography variant="body2" color="textSecondary">
+                      OR
+                    </Typography>
+                  </div>
+                  <div className={classes.orLine} />
+                </div>
+                <LoginWithFacebook color="secondary" iconColor="blue" />
+                <AuthError error={error} />
+                <Button fullWidth color="secondary" onClick={handleForgetPass}>
+                  <Typography variant="caption">Forgot password?</Typography>
+                </Button>
+              </Card>
+              <Card className={classes.signUpCard}>
+                <Typography align="right" variant="body2">
+                  Don't have an account?
                 </Typography>
-              </div>
-              <div className={classes.orLine} />
-            </div>
-            <LoginWithFacebook color="secondary" iconColor="blue" />
-            <AuthError error={error} />
-            <Button fullWidth color="secondary">
-              <Typography variant="caption">Forgot password?</Typography>
-            </Button>
-          </Card>
-          <Card className={classes.signUpCard}>
-            <Typography align="right" variant="body2">
-              Don't have an account?
-            </Typography>
-            <Link to="/accounts/emailsignup">
-              <Button color="primary" className={classes.signUpButton}>
-                Sign up
-              </Button>
-            </Link>
-          </Card>
-        </article>
-      </section>
+                <Link to="/accounts/emailsignup">
+                  <Button color="primary" className={classes.signUpButton}>
+                    Sign up
+                  </Button>
+                </Link>
+              </Card>
+            </article>
+          </section>
+        </div>
+      )}
+      {forgetPass && <ForgotPassword handleForgetPass={handleForgetPass} />}
     </>
   );
 }
 
-export function LoginWithFacebook({ color, iconColor, variant }) {
+export function LoginWithFacebook({ color, variant }) {
   const classes = useLoginPageStyles();
   const { logInWithGoogle } = React.useContext(AuthContext);
-  const facebookIcon =
-    iconColor === "blue" ? FacebookIconBlue : FacebookIconWhite;
+  const facebookIcon = FacebookIconBlue;
   const [error, setError] = React.useState("");
   const history = useHistory();
 
@@ -185,7 +244,7 @@ export function LoginWithFacebook({ color, iconColor, variant }) {
           alt="facebook icon"
           className={classes.facebookIcon}
         />
-        Log In with Facebook
+        Log In with Google
       </Button>
       <AuthError error={error} />
     </>

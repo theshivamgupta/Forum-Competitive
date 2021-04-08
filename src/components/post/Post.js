@@ -2,30 +2,15 @@ import React from "react";
 import "./Post.css";
 
 import { usePostStyles } from "../../styles";
-import UserCard from "../shared/UserCard";
-import {
-  MoreIcon,
-  CommentIcon,
-  ShareIcon,
-  UnlikeIcon,
-  LikeIcon,
-  RemoveIcon,
-  SaveIcon,
-} from "../../icons";
+import { MoreIcon, RemoveIcon, SaveIcon } from "../../icons";
 import { Link } from "react-router-dom";
 import {
   Typography,
   Button,
-  Hidden,
   Divider,
   TextField,
   Avatar,
   Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
 } from "@material-ui/core";
 import OptionsDialog from "../shared/OptionsDialog";
 // import { defaultPost } from "../../data";
@@ -41,7 +26,6 @@ import {
   CREATE_COMMENT,
 } from "../../graphql/mutations";
 import { formatDateToNowShort, formatPostDate } from "../../utils/formatDate";
-import Img from "react-graceful-image";
 import { Scrollbar } from "react-scrollbars-custom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
@@ -50,13 +34,11 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CommentOutlinedIcon from "@material-ui/icons/CommentOutlined";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 function Post({ postId }) {
   // const [loading, setLoading] = React.useState(true);
   // React.useEffect(() => window.location.reload(), []);
   const [openDialog, setDialog] = React.useState(false);
-  const { currentUserId } = React.useContext(UserContext);
   const variables = { postId };
   const { data, loading } = useSubscription(GET_POST, { variables });
   // console.log(data);

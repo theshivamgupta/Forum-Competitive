@@ -243,8 +243,8 @@ export const GET_FEED_ALL = gql`
 `;
 
 export const GET_LAST_LOGIN = gql`
-  query getLastLogin($userId: uuid) {
-    users(where: { id: { _eq: $userId } }) {
+  query getLastLogin($input: String!) {
+    users(where: { username: { _eq: $input } }) {
       username
       last_login
     }

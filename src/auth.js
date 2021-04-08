@@ -84,6 +84,7 @@ function AuthProvider({ children }) {
       .auth()
       .createUserWithEmailAndPassword(formData.email, formData.password);
     if (data.additionalUserInfo.isNewUser) {
+      await data.user.sendEmailVerification();
       const variables = {
         userId: data.user.uid,
         name: formData.name,

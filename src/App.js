@@ -19,6 +19,7 @@ import { AuthContext } from "./auth";
 import { useSubscription } from "@apollo/client";
 import { ME } from "./graphql/subscriptions";
 import LoadingScreen from "./components/shared/LoadingScreen";
+import FirstLogin from "./pages/firstLogin";
 
 export const UserContext = React.createContext();
 
@@ -72,7 +73,8 @@ function App() {
     >
       <Switch location={isModalOpen ? prevLocation.current : location}>
         <Route exact path="/" component={FeedPage} />
-        <Route path="/explore" component={ExplorePage} />
+        <Route exact path="/explore" component={ExplorePage} />
+        <Route exact path="/:username/firstLogin" component={FirstLogin} />
         <Route exact path="/:username" component={ProfilePage} />
         <Route exact path="/p/:postId" component={PostPage} />
         <Route path="/accounts/edit" component={EditProfilePage} />

@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+}
+
+.container {
+  /* background: linear-gradient(to top left, #ffffff 12%, #31285d 100%); */
+  height: 100%;
+  background-attachment: fixed;
+}
+
+.card-container {
+  background-color: #000;
+}
+
+.rotated-image {
+  -webkit-transform: rotate(20deg);
+  transform: rotate(20deg);
+}

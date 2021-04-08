@@ -37,7 +37,7 @@ function ProfilePage() {
 
   if (loading) return <LoadingScreen />;
   const [user] = data.users;
-  const isOwner = user.id === currentUserId;
+  const isOwner = user?.id === currentUserId;
 
   function handleOptionsMenuClick() {
     setOptionsMenu(true);

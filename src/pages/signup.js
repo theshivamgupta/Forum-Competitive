@@ -16,6 +16,7 @@ import { HighlightOff, CheckCircleOutline } from "@material-ui/icons";
 import isEmail from "validator/lib/isEmail";
 import { useApolloClient } from "@apollo/client";
 import { CHECK_IF_USERNAME_TAKEN } from "../graphql/queries";
+import logo from "../images/logo.png";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
@@ -73,18 +74,15 @@ function SignUpPage() {
   return (
     <>
       <SEO title="Sign up" />
+      <img src={logo} alt="logo" style={{ margin: "auto" }} />
       <section className={classes.section}>
         <article>
           <Card className={classes.card}>
             <div className={classes.cardHeader} />
             <Typography className={classes.cardHeaderSubHeader}>
-              Sign up to see photos and videos from your friends.
+              Sign up to see Post Questions and help someone else
             </Typography>
-            <LoginWithFacebook
-              color="primary"
-              iconColor="white"
-              variant="contained"
-            />
+            <LoginWithFacebook color="secondary" variant="contained" />
             <div className={classes.orContainer}>
               <div className={classes.orLine} />
               <div>
@@ -144,7 +142,7 @@ function SignUpPage() {
                   maxLength: 20,
                   validate: async (input) => await validateUsername(input),
                   // accept only lowercase/uppercase letters, numbers, periods and underscores
-                  pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/,
+                  pattern: /^[a-zA-Z0-9_.]*$/,
                 })}
                 fullWidth
                 variant="filled"

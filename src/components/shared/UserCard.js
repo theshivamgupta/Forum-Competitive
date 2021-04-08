@@ -6,7 +6,7 @@ import { defaultUser } from "../../data";
 
 function UserCard({ user = defaultUser, avatarSize = 44 }) {
   const classes = useUserCardStyles({ avatarSize });
-  const { username, name, profile_image } = user;
+  const { username, profile_image } = user;
 
   return (
     <div className={classes.wrapper}>

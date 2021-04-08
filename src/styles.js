@@ -1,5 +1,5 @@
 import { makeStyles, withStyles, Tooltip } from "@material-ui/core";
-import IconSheet from "./images/icon-sheet.png";
+import IconSheet from "./images/logo.png";
 import IconSheet2 from "./images/icon-sheet-2.png";
 
 /* Feed page: /pages/feed.js */
@@ -90,8 +90,8 @@ export const useLoginPageStyles = makeStyles({
     backgroundImage: `url(${IconSheet})`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "-98px 0",
-    height: 51,
-    width: 175,
+    height: "100%",
+    width: "100%",
     margin: "22px auto 12px",
   },
   textField: {
@@ -124,16 +124,22 @@ export const useLoginPageStyles = makeStyles({
 
 // SignUp page: /pages/signup.js
 export const useSignUpPageStyles = makeStyles({
-  card: { maxWidth: 348, padding: "16px 40px", marginBottom: 10 },
+  card: {
+    maxWidth: 348,
+    padding: "10px 40px",
+    paddingTop: "-10px",
+    marginBottom: 10,
+    margin: "auto",
+  },
   section: {
     display: "grid",
     placeItems: "center",
     height: "100vh",
   },
   cardHeader: {
-    backgroundImage: `url(${IconSheet})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "-98px 0",
+    // backgroundImage: `url(${IconSheet})`,
+    // backgroundRepeat: "no-repeat",
+    // backgroundPosition: "-98px 0",
     height: 51,
     width: 175,
     margin: "22px auto 12px",
