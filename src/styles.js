@@ -204,7 +204,7 @@ export const useNavbarStyles = makeStyles((theme) => ({
   logoContainer: {
     display: "flex",
     flex: "1 9999 0%",
-    minWidth: 40,
+    minWidth: 35,
   },
   logoWrapper: {
     flex: "0 0 auto",
@@ -214,8 +214,8 @@ export const useNavbarStyles = makeStyles((theme) => ({
   },
   logo: {
     marginTop: 7,
-    maxHeight: "100%",
-    maxWidth: "100%",
+    maxHeight: "50%",
+    maxWidth: "50%",
     objectFit: "contain",
   },
   input: {

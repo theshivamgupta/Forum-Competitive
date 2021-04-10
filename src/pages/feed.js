@@ -3,9 +3,7 @@ import { useFeedPageStyles } from "../styles";
 import Layout from "../components/shared/Layout";
 import UserCard from "../components/shared/UserCard";
 // import FeedPost from "../components/feed/FeedPost";
-import FeedSideSuggestions from "../components/feed/FeedSideSuggestions";
 // import { getDefaultPost } from "../data";
-import { Hidden } from "@material-ui/core";
 import LoadingScreen from "../components/shared/LoadingScreen";
 // import { LoadingLargeIcon } from "../icons";
 import FeedPostSkeleton from "../components/feed/FeedPostSkeleton";
@@ -61,14 +59,14 @@ function FeedPage() {
           ))}
         </div>
         {/* Sidebar */}
-        <Hidden smDown>
+        {/* <Hidden smDown>
           <div className={classes.sidebarContainer}>
             <div className={classes.sidebarWrapper}>
               <UserCard user={me} avatarSize={50} />
               <FeedSideSuggestions />
             </div>
           </div>
-        </Hidden>
+        </Hidden> */}
         {/* {!isEndOfFeed && <LoadingLargeIcon />} */}
       </div>
     </Layout>

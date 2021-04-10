@@ -60,8 +60,6 @@ function App() {
 
   const isModalOpen = modal && prevLocation.current !== location;
   const me = isAuth && data ? data.users[0] : null;
-  // console.log(data.users);
-  // console.log({ me });
   const currentUserId = me.id;
   const followingIds = me.followings.map(({ user }) => user.id);
   const followerIds = me.followers.map(({ user }) => user.id);
@@ -75,8 +73,8 @@ function App() {
         <Route exact path="/" component={FeedPage} />
         <Route exact path="/explore" component={ExplorePage} />
         <Route exact path="/:username/firstLogin" component={FirstLogin} />
-        <Route exact path="/:username" component={ProfilePage} />
         <Route exact path="/p/:postId" component={PostPage} />
+        <Route exact path="/:username" component={ProfilePage} />
         <Route path="/accounts/edit" component={EditProfilePage} />
         <Route path="/accounts/login" component={LoginPage} />
         <Route path="/accounts/emailsignup" component={SignUpPage} />

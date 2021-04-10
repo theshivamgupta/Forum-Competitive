@@ -1,6 +1,4 @@
 import React from "react";
-import "./Post.css";
-
 import { usePostStyles } from "../../styles";
 import { MoreIcon, RemoveIcon, SaveIcon } from "../../icons";
 import { Link } from "react-router-dom";
@@ -34,6 +32,7 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CommentOutlinedIcon from "@material-ui/icons/CommentOutlined";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import "./Post.css";
 
 function Post({ postId }) {
   // const [loading, setLoading] = React.useState(true);
@@ -71,7 +70,12 @@ function Post({ postId }) {
 
   return (
     <div className="app-container">
-      <Paper className="container" square elevation={3}>
+      <Paper
+        className="container"
+        square
+        elevation={3}
+        style={{ width: "100%", height: "1000px", display: "block" }}
+      >
         <Scrollbar style={{ width: "100%", height: "100%" }}>
           <div className="card-container">
             <div className="back-container">
@@ -119,14 +123,14 @@ function Post({ postId }) {
         </Scrollbar>
       </Paper>
       <Paper className="post-comment-container">
-        <div className="comment-container">
+        <div className="comment-container" style={{ width: "100%" }}>
           <CommentOutlinedIcon fontSize="small" className="comment-icon" />
           <Typography variant="caption" className="comment-typography">
             {`Comments: ${commentCount}`}
           </Typography>
         </div>
       </Paper>
-      <Paper className="textarea-container">
+      <Paper className="textarea-container" style={{ margin: "auto" }}>
         <Comment postId={id} comments={comments} />
       </Paper>
       {openDialog && (
@@ -188,7 +192,6 @@ function UserComment({ comment }) {
     ),
     code: Highlight,
   };
-
   return (
     <div>
       <div className="comment-card">
@@ -338,10 +341,10 @@ function Comment({ postId, comments }) {
           />
         )}
       </div>
-      <div>
+      <div style={{ display: "flex" }}>
         <Button
           color="primary"
-          style={{ marginRight: "800px" }}
+          style={{ marginRight: "600px" }}
           onClick={handlePreview}
           disabled={!value.trim()}
         >
@@ -356,28 +359,6 @@ function Comment({ postId, comments }) {
         </Button>
       </div>
       <div style={{ width: "100%" }}>
-        {/* <div className="comment-card">
-            <div className="avatar">
-              <Avatar
-                src={comments?.user?.profile_image}
-                alt="avatar"
-                variant="circular"
-              />
-            </div>
-            <div className="author-details">
-              <Typography variant="caption">happykimi</Typography>
-              <Typography variant="caption">June 13, 2018 10:27 AM</Typography>
-            </div>
-          </div>
-          <div className="comment-md">
-            <ReactMarkdown
-              source={comments.content}
-              escapeHtml={false}
-              className="markdown"
-              renderers={renderers}
-            />
-          </div>
-          <Divider /> */}
         {comments.map((comment) => (
           <UserComment key={comment.id} comment={comment} />
         ))}

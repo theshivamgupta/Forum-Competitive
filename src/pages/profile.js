@@ -30,11 +30,10 @@ function ProfilePage() {
   const classes = useProfilePageStyles();
   const [showOptionsMenu, setOptionsMenu] = React.useState(false);
   const variables = { username };
-  const { data, loading } = useQuery(GET_USER_PROFILE, {
+  const { data, loading, error } = useQuery(GET_USER_PROFILE, {
     variables,
     fetchPolicy: "no-cache",
   });
-
   if (loading) return <LoadingScreen />;
   const [user] = data.users;
   const isOwner = user?.id === currentUserId;

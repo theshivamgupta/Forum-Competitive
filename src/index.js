@@ -7,7 +7,7 @@ import theme from "./theme";
 import App from "./App";
 import AuthProvider from "./auth";
 import client from "./graphql/client";
-
+import "./index.css";
 // class ErrorBoundary extends React.Component {
 //   state = { hasError: false };
 

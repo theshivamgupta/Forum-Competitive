@@ -1,5 +1,10 @@
 import React from "react";
-import { useNavbarStyles, WhiteTooltip, RedTooltip } from "../../styles";
+import {
+  useNavbarStyles,
+  WhiteTooltip,
+  RedTooltip,
+  useEditProfilePageStyles,
+} from "../../styles";
 import {
   AppBar,
   Hidden,
@@ -9,12 +14,17 @@ import {
   Grid,
   Typography,
   Zoom,
+  IconButton,
+  Drawer,
+  ListItemText,
+  ListItem,
+  ClickAwayListener,
+  List,
 } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
-import cpblog from "../../images/cpblog.png";
+import logo from "../../images/logo.png";
 import {
   LoadingIcon,
-  AddIcon,
   LikeIcon,
   LikeActiveIcon,
   ExploreIcon,
@@ -31,7 +41,7 @@ import { SEARCH_USERS } from "../../graphql/queries";
 import { UserContext } from "../../App";
 import AddPostDialog from "../post/AddPostDialog";
 import { isAfter } from "date-fns";
-
+import MenuIcon from "@material-ui/icons/Menu";
 function Navbar({ minimalNavbar }) {
   const classes = useNavbarStyles();
   const history = useHistory();
@@ -62,12 +72,11 @@ function Navbar({ minimalNavbar }) {
 
 function Logo() {
   const classes = useNavbarStyles();
-
   return (
     <div className={classes.logoContainer}>
       <Link to="/">
         <div className={classes.logoWrapper}>
-          <img src={cpblog} alt="Cp-blog" className={classes.logo} />
+          <img src={logo} alt="Cp-blog" className={classes.logo} />
         </div>
       </Link>
     </div>
@@ -203,37 +212,135 @@ function Links({ path }) {
           currentUserId={currentUserId}
         />
       )}
-      <div className={classes.linksWrapper}>
-        {showAddPostDialog && <AddPostDialog handleClose={handleClose} />}
-        {/* <Hidden xsDown> */}
-        <AddIcon onClick={openFileInput} />
-        {/* </Hidden> */}
-        <Link to="/">{path === "/" ? <HomeActiveIcon /> : <HomeIcon />}</Link>
-        <Link to="/explore">
-          {path === "/explore" ? <ExploreActiveIcon /> : <ExploreIcon />}
-        </Link>
-        <RedTooltip
-          arrow
-          open={showTooltip}
-          onOpen={handleHideTooltip}
-          TransitionComponent={Zoom}
-          title={<NotificationTooltip notifications={newNotifications} />}
-        >
-          <div
-            className={hasNotifications ? classes.notifications : ""}
-            onClick={handleToggleList}
+      <Hidden xsDown>
+        <div className={classes.linksWrapper}>
+          {showAddPostDialog && <AddPostDialog handleClose={handleClose} />}
+          {/* <Hidden xsDown> */}
+          {/* <AddIcon onClick={openFileInput} /> */}
+          <button
+            className="bg-blue-700 p-2 px-3 rounded-xl focus:outline-none"
+            onClick={openFileInput}
           >
-            {showList ? <LikeActiveIcon /> : <LikeIcon />}
-          </div>
-        </RedTooltip>
-        <Link to={`/${me.username}`}>
-          <div
-            className={path === `/${me.username}` ? classes.profileActive : ""}
-          ></div>
-          <Avatar src={me.profile_image} className={classes.profileImage} />
-        </Link>
-      </div>
+            <p className="text-white flex justify-center items-center">
+              <span>+</span>Write
+            </p>
+          </button>
+          {/* </Hidden> */}
+          <Link to="/">{path === "/" ? <HomeActiveIcon /> : <HomeIcon />}</Link>
+          <Link to="/explore">
+            {path === "/explore" ? <ExploreActiveIcon /> : <ExploreIcon />}
+          </Link>
+          <RedTooltip
+            arrow
+            open={showTooltip}
+            onOpen={handleHideTooltip}
+            TransitionComponent={Zoom}
+            title={<NotificationTooltip notifications={newNotifications} />}
+          >
+            <div
+              className={hasNotifications ? classes.notifications : ""}
+              onClick={handleToggleList}
+            >
+              {showList ? <LikeActiveIcon /> : <LikeIcon />}
+            </div>
+          </RedTooltip>
+          <Link to={`/${me.username}`}>
+            <div
+              className={
+                path === `/${me.username}` ? classes.profileActive : ""
+              }
+            ></div>
+            <Avatar src={me.profile_image} className={classes.profileImage} />
+          </Link>
+        </div>
+      </Hidden>
+
+      <Hidden smUp>
+        <Menu me={me} />
+      </Hidden>
     </div>
+  );
+}
+
+function Menu({ me }) {
+  const classes = useEditProfilePageStyles();
+  const [showDrawer, setDrawer] = React.useState(false);
+  const history = useHistory();
+  const path = history.location.pathname;
+  // console.log({ path });
+  function handleShowDrawer(e) {
+    e.preventDefault();
+    setDrawer((prev) => !prev);
+  }
+
+  function handleSelected(index) {
+    switch (index) {
+      case 0:
+        return false;
+      case 1:
+        return !path.includes("explore") && !path.includes(`${me.username}`);
+      case 2:
+        return path.includes("explore");
+      case 3:
+        return path.includes(`${me.username}`);
+      default:
+        break;
+    }
+  }
+
+  function handleListClick(index) {
+    switch (index) {
+      case 0:
+        // history.push("/accounts/edit");
+        break;
+      case 1:
+        history.push("/");
+        break;
+      case 2:
+        history.push("/explore");
+        break;
+      case 3:
+        history.push(`/${me.username}`);
+        break;
+      default:
+        break;
+    }
+  }
+
+  const options = ["Write", "Home", "Explore", "Profile"];
+
+  const drawer = (
+    <List>
+      {options.map((option, index) => (
+        <ListItem
+          key={option}
+          button
+          selected={handleSelected(index)}
+          onClick={() => handleListClick(index)}
+          classes={{
+            selected: classes.listItemSelected,
+            button: classes.listItemButton,
+          }}
+        >
+          <ListItemText primary={option} />
+        </ListItem>
+      ))}
+    </List>
+  );
+
+  return (
+    <IconButton edge="end" onClick={handleShowDrawer}>
+      <MenuIcon />
+      <Drawer
+        variant="temporary"
+        anchor="left"
+        open={showDrawer}
+        onClose={handleShowDrawer}
+        classes={{ paperAnchorLeft: classes.temporaryDrawer }}
+      >
+        {drawer}
+      </Drawer>
+    </IconButton>
   );
 }
 

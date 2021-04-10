@@ -7,7 +7,13 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Link } from "react-router-dom";
 
 function ForgotPassword({ handleForgetPass }) {
+  const [value, setValue] = React.useState("");
   const classes = useLoginPageStyles();
+
+  function handleValue(e) {
+    setValue(e.target.value);
+  }
+
   return (
     <>
       <div className="container">
@@ -55,6 +61,7 @@ function ForgotPassword({ handleForgetPass }) {
                 margin="dense"
                 className={classes.textField}
                 autoComplete="username"
+                onChange={handleValue}
               />
               <Button
                 variant="contained"

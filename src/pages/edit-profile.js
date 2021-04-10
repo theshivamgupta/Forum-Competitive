@@ -62,17 +62,7 @@ function EditProfilePage({ history }) {
     }
   }
 
-  const options = [
-    "Edit Profile",
-    "Change Password",
-    "Apps and Websites",
-    "Email and SMS",
-    "Push Notifications",
-    "Manage Contacts",
-    "Privacy and Security",
-    "Login Activity",
-    "Emails from Instagram",
-  ];
+  const options = ["Edit Profile", "Change Password"];
 
   const drawer = (
     <List>
