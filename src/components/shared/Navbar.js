@@ -18,7 +18,6 @@ import {
   Drawer,
   ListItemText,
   ListItem,
-  ClickAwayListener,
   List,
 } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
@@ -42,6 +41,8 @@ import { UserContext } from "../../App";
 import AddPostDialog from "../post/AddPostDialog";
 import { isAfter } from "date-fns";
 import MenuIcon from "@material-ui/icons/Menu";
+import ControlPointIcon from "@material-ui/icons/ControlPoint";
+
 function Navbar({ minimalNavbar }) {
   const classes = useNavbarStyles();
   const history = useHistory();
@@ -222,7 +223,8 @@ function Links({ path }) {
             onClick={openFileInput}
           >
             <p className="text-white flex justify-center items-center">
-              <span>+</span>Write
+              <ControlPointIcon />
+              <span className="font-semibold text-lg">Write</span>
             </p>
           </button>
           {/* </Hidden> */}
@@ -256,13 +258,13 @@ function Links({ path }) {
       </Hidden>
 
       <Hidden smUp>
-        <Menu me={me} />
+        <Menu me={me} openFileInput={openFileInput} />
       </Hidden>
     </div>
   );
 }
 
-function Menu({ me }) {
+function Menu({ me, openFileInput }) {
   const classes = useEditProfilePageStyles();
   const [showDrawer, setDrawer] = React.useState(false);
   const history = useHistory();
@@ -307,7 +309,19 @@ function Menu({ me }) {
     }
   }
 
-  const options = ["Write", "Home", "Explore", "Profile"];
+  const writeButton = (
+    <button
+      className="bg-blue-700 p-2 px-3 rounded-xl focus:outline-none w-full"
+      onClick={openFileInput}
+    >
+      <p className="text-white flex justify-center items-center">
+        <ControlPointIcon className="mr-3 -ml-2" />
+        <span className="font-semibold text-xl">Write</span>
+      </p>
+    </button>
+  );
+
+  const options = [writeButton, "Home", "Explore", "Profile"];
 
   const drawer = (
     <List>

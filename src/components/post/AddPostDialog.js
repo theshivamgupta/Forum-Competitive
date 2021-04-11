@@ -28,6 +28,7 @@ import handleImageUpload from "../../utils/handleImageUpload";
 import { useMutation } from "@apollo/client";
 import { CREATE_POST } from "../../graphql/mutations";
 import serialiseMd from "../../utils/serialisemd";
+import gfm from "remark-gfm";
 
 const shortUrl = require("node-url-shortener");
 
@@ -168,9 +169,6 @@ function AddPostDialog({ handleClose }) {
           value={value}
           onChange={(value) => {
             setValue(value);
-            // setInput(value);
-            // console.log(value);
-            // console.log(value[0].children[0].text);
           }}
         >
           <Editable
@@ -184,11 +182,6 @@ function AddPostDialog({ handleClose }) {
             }}
           />
         </Slate>
-        {/* <Avatar
-          src={URL.createObjectURL(media)}
-          className={classes.avatarLarge}
-          variant="square"
-        /> */}
       </Paper>
       <div
         className="nothing"
@@ -197,8 +190,9 @@ function AddPostDialog({ handleClose }) {
         <ReactMarkdown
           source={serialiseMd(value)}
           escapeHtml={false}
-          className="markdown"
+          className="prose"
           renderers={renderers}
+          plugins={[gfm]}
           onChange={(e) => console.log("yup")}
           children={serialiseMd(value)}
         />

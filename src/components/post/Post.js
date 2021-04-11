@@ -71,7 +71,7 @@ function Post({ postId }) {
   return (
     <div className="app-container">
       <Paper
-        className="container"
+        className="contain"
         square
         elevation={3}
         style={{ width: "100%", height: "1000px", display: "block" }}
@@ -116,7 +116,7 @@ function Post({ postId }) {
             <ReactMarkdown
               source={caption}
               escapeHtml={false}
-              className="markdown"
+              className="prose"
               renderers={renderers}
             />
           </div>

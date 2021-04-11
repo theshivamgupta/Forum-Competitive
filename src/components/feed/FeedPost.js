@@ -37,22 +37,24 @@ function FeedPost({ post, index }) {
   const Icon = isAlreadyLiked ? ThumbUpAltIcon : ThumbUpAltOutlinedIcon;
 
   return (
-    <div className="container">
-      <div className="avatar-container">
-        <Link to={`/${data?.posts_by_pk?.user?.username}`}>
-          <Avatar src={data?.posts_by_pk?.user?.profile_image} alt="color" />
-          <p>{data?.posts_by_pk?.user?.username}</p>
-        </Link>
-      </div>
-      <div className="user-details-container">
-        <Link to={`/p/${data?.posts_by_pk?.id}`}>
-          <div className="title-container">{media}</div>
-          <div className="time-container">{formatDateToNow(created_at)}</div>
-        </Link>
-      </div>
-      <div className="container-like">
-        <Icon className="picture" />
-        <span>{likesCount === 1 ? "1 like" : `${likesCount} likes`}</span>
+    <div className="flex flex-col justify-center items-center w-auto">
+      <div className="container">
+        <div className="avatar-container">
+          <Link to={`/${data?.posts_by_pk?.user?.username}`}>
+            <Avatar src={data?.posts_by_pk?.user?.profile_image} alt="color" />
+            <p>{data?.posts_by_pk?.user?.username}</p>
+          </Link>
+        </div>
+        <div className="user-details-container">
+          <Link to={`/p/${data?.posts_by_pk?.id}`}>
+            <div className="title-container">{media}</div>
+            <div className="time-container">{formatDateToNow(created_at)}</div>
+          </Link>
+        </div>
+        <div className="container-like">
+          <Icon className="picture" />
+          <span>{likesCount === 1 ? "1 like" : `${likesCount} likes`}</span>
+        </div>
       </div>
     </div>
   );
