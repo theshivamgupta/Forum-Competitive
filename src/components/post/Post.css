@@ -6,13 +6,13 @@
 }
 
 .app-container {
-  /* width: 1000px; */
+  /* width: 90%; */
   margin: auto;
   /* height: 100%; */
 }
 
 .contain {
-  width: 1000px;
+  width: auto;
   margin: auto;
   margin-top: 10px;
   border: 1px solid #eeeeee;
@@ -46,7 +46,7 @@
   align-self: flex-end;
 }
 
-.like-container span {
+.like-container p {
   margin-top: -10px;
   font-size: 0.8rem;
 }
@@ -148,11 +148,12 @@
 .comment-card {
   display: flex;
   height: 30px;
+  margin: 8px 0px;
 }
 
 .avatar {
   width: 6%;
-  border-right: 1px solid #000;
+  /* border-right: 1px solid #000; */
 }
 
 .author-details {

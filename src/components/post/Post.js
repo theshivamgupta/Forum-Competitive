@@ -32,11 +32,14 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CommentOutlinedIcon from "@material-ui/icons/CommentOutlined";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import { useMediaQuery } from "react-responsive";
 import "./Post.css";
 
 function Post({ postId }) {
-  // const [loading, setLoading] = React.useState(true);
-  // React.useEffect(() => window.location.reload(), []);
+  const isMobile = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
+  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 991 });
   const [openDialog, setDialog] = React.useState(false);
   const variables = { postId };
   const { data, loading } = useSubscription(GET_POST, { variables });
@@ -69,16 +72,19 @@ function Post({ postId }) {
   }
 
   return (
-    <div className="app-container">
+    <div
+      className="app-container"
+      style={{ width: isMobile ? "100vw" : "70vw" }}
+    >
       <Paper
         className="contain"
         square
         elevation={3}
-        style={{ width: "100%", height: "1000px", display: "block" }}
+        style={{ width: "100%", height: "1000px" }}
       >
         <Scrollbar style={{ width: "100%", height: "100%" }}>
           <div className="card-container">
-            <div className="back-container">
+            <div className="back-container flex w-14">
               <Link to={`/`}>
                 <ArrowBackIosIcon
                   style={{ marginTop: "1px", fontSize: "small" }}
@@ -91,12 +97,12 @@ function Post({ postId }) {
               {/* <ThumbUpAltOutlinedIcon style={{ marginRight: "10px" }} /> */}
               <LikeButton likes={likes} postId={id} authorId={user.id} />
               {/* <div></div> */}
-              <span>{`${likesCount} likes`}</span>
+              <p>{`${likesCount} likes`}</p>
             </div>
           </div>
           <div className="content-container">
             <div className="user-detail-container">
-              <div className="image">
+              <div className="image w-12">
                 <Link to={`/${user.username}`}>
                   <Avatar
                     src={user.profile_image}
@@ -107,7 +113,9 @@ function Post({ postId }) {
               </div>
               <div className="post-detail">
                 <p>{user?.username}</p>
-                <p>{`Created At: ${formatPostDate(created_at)}`}</p>
+                <p
+                  style={{ fontSize: isMobile ? "0.8rem" : "1rem" }}
+                >{`Created At: ${formatPostDate(created_at)}`}</p>
                 <MoreIcon onClick={handleDialog} />
               </div>
             </div>
@@ -131,7 +139,12 @@ function Post({ postId }) {
         </div>
       </Paper>
       <Paper className="textarea-container" style={{ margin: "auto" }}>
-        <Comment postId={id} comments={comments} />
+        <Comment
+          postId={id}
+          comments={comments}
+          isMobile={isMobile}
+          isTablet={isTablet}
+        />
       </Paper>
       {openDialog && (
         <OptionsDialog
@@ -184,8 +197,6 @@ function AuthorCaption({ user, caption, createdAt }) {
 }
 
 function UserComment({ comment }) {
-  const classes = usePostStyles();
-
   const renderers = {
     image: ({ alt, src, title }) => (
       <img alt={alt} src={src} title={title} style={{ maxWidth: 400 }} />
@@ -213,7 +224,7 @@ function UserComment({ comment }) {
         <ReactMarkdown
           source={comment.content}
           escapeHtml={false}
-          className="markdown"
+          className="prose"
           renderers={renderers}
         />
       </div>
@@ -284,7 +295,7 @@ function SaveButton({ savedPosts, postId }) {
   return <Icon className={classes.saveIcon} onClick={onClick} />;
 }
 
-function Comment({ postId, comments }) {
+function Comment({ postId, comments, isMobile, isTablet }) {
   // const classes = usePostStyles();
   const [value, setValue] = React.useState("");
   const [showPreview, setPreview] = React.useState(false);
@@ -336,7 +347,7 @@ function Comment({ postId, comments }) {
           <ReactMarkdown
             source={value}
             escapeHtml={false}
-            className="markdown"
+            className="prose"
             renderers={renderers}
           />
         )}
@@ -344,7 +355,9 @@ function Comment({ postId, comments }) {
       <div style={{ display: "flex" }}>
         <Button
           color="primary"
-          style={{ marginRight: "600px" }}
+          style={{
+            marginRight: isMobile ? "200px" : isTablet ? "400px" : "600px",
+          }}
           onClick={handlePreview}
           disabled={!value.trim()}
         >

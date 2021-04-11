@@ -33,6 +33,7 @@
     "react-lines-ellipsis": "^0.14.1",
     "react-markdown": "^5.0.3",
     "react-modal": "^3.12.1",
+    "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0",
     "react-scrollbars-custom": "^4.0.25",
