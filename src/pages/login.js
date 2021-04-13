@@ -52,7 +52,13 @@ function LoginPage() {
         return;
       }
       console.log({ data });
-      setTimeout(() => history.push("/"), 0);
+      setTimeout(
+        () =>
+          input.lastLogin === null
+            ? history.push(`/${input.userUsername}/firstLogin`)
+            : history.push("/"),
+        0
+      );
     } catch (error) {
       // console.error("Error logging in", error);
       handleError(error);

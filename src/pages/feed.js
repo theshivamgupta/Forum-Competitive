@@ -11,6 +11,9 @@ import { UserContext } from "../App";
 import { useQuery } from "@apollo/client";
 import { GET_FEED_ALL } from "../graphql/queries";
 import usePageBottom from "../utils/usePageBottom";
+import { Hidden } from "@material-ui/core";
+import CardUser from "../components/shared/CardUser";
+import FeedSideSuggestions from "../components/feed/FeedSideSuggestions";
 // import { LoadingLargeIcon } from "../icons";
 const FeedPost = React.lazy(() => import("../components/feed/FeedPost"));
 
@@ -67,7 +70,6 @@ function FeedPage() {
             </div>
           </div>
         </Hidden> */}
-        {/* {!isEndOfFeed && <LoadingLargeIcon />} */}
       </div>
     </Layout>
   );

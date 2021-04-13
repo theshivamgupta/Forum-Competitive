@@ -21,7 +21,7 @@ import { UserContext } from "../../App";
 import { GET_POST } from "../../graphql/queries";
 function FeedPost({ post, index }) {
   // const [showCaption, setCaption] = React.useState(false);
-  const [showOptionsDialog, setOptionsDialog] = React.useState(false);
+  // const [showOptionsDialog, setOptionsDialog] = React.useState(false);
   const { currentUserId } = React.useContext(UserContext);
   const { id, media, likes, likes_aggregate, user, created_at } = post;
 
@@ -37,7 +37,7 @@ function FeedPost({ post, index }) {
   const Icon = isAlreadyLiked ? ThumbUpAltIcon : ThumbUpAltOutlinedIcon;
 
   return (
-    <div className="flex flex-col justify-center items-center w-auto">
+    <div className="flex flex-col my-auto -ml-4">
       <div className="container">
         <div className="avatar-container">
           <Link to={`/${data?.posts_by_pk?.user?.username}`}>

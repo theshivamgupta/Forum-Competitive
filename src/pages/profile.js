@@ -340,16 +340,11 @@ function OptionsMenu({ handleCloseMenu }) {
         <DialogTitle className={classes.dialogTitle}>
           Logging Out
           <Typography color="textSecondary">
-            You need to log back in to continue using Instagram.
+            You need to log back in to continue using CodeBlog
           </Typography>
         </DialogTitle>
       ) : (
         <>
-          <OptionsItem text="Change Password" />
-          <OptionsItem text="Nametag" />
-          <OptionsItem text="Authorized Apps" />
-          <OptionsItem text="Notifications" />
-          <OptionsItem text="Privacy and Security" />
           <OptionsItem text="Log Out" onClick={handleLogOutClick} />
           <OptionsItem text="Cancel" onClick={handleCloseMenu} />
         </>

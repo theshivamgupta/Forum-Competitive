@@ -20,6 +20,8 @@ import { useSubscription } from "@apollo/client";
 import { ME } from "./graphql/subscriptions";
 import LoadingScreen from "./components/shared/LoadingScreen";
 import FirstLogin from "./pages/firstLogin";
+import PrivateRoute from "./auth/PrivateRoute";
+import GuestRoute from "./auth/GuestRoute";
 
 export const UserContext = React.createContext();
 
@@ -70,15 +72,19 @@ function App() {
       value={{ me, currentUserId, followingIds, followerIds, feedIds }}
     >
       <Switch location={isModalOpen ? prevLocation.current : location}>
-        <Route exact path="/" component={FeedPage} />
-        <Route exact path="/explore" component={ExplorePage} />
-        <Route exact path="/:username/firstLogin" component={FirstLogin} />
-        <Route exact path="/p/:postId" component={PostPage} />
-        <Route exact path="/:username" component={ProfilePage} />
-        <Route path="/accounts/edit" component={EditProfilePage} />
-        <Route path="/accounts/login" component={LoginPage} />
-        <Route path="/accounts/emailsignup" component={SignUpPage} />
-        <Route path="*" component={NotFoundPage} />
+        <GuestRoute exact path="/accounts/login" component={LoginPage} />
+        <GuestRoute exact path="/accounts/emailsignup" component={SignUpPage} />
+        <PrivateRoute exact path="/" component={FeedPage} />
+        <PrivateRoute exact path="/explore" component={ExplorePage} />
+        <PrivateRoute
+          exact
+          path="/:username/firstLogin"
+          component={FirstLogin}
+        />
+        <PrivateRoute exact path="/p/:postId" component={PostPage} />
+        <PrivateRoute path="/accounts/edit" component={EditProfilePage} />
+        <PrivateRoute exact path="/:username" component={ProfilePage} />
+        <GuestRoute path="*" component={NotFoundPage} />
       </Switch>
       {isModalOpen && <Route exact path="/p/:postId" component={PostModal} />}
     </UserContext.Provider>

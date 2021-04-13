@@ -42,6 +42,8 @@ import AddPostDialog from "../post/AddPostDialog";
 import { isAfter } from "date-fns";
 import MenuIcon from "@material-ui/icons/Menu";
 import ControlPointIcon from "@material-ui/icons/ControlPoint";
+import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 
 function Navbar({ minimalNavbar }) {
   const classes = useNavbarStyles();
@@ -216,8 +218,6 @@ function Links({ path }) {
       <Hidden xsDown>
         <div className={classes.linksWrapper}>
           {showAddPostDialog && <AddPostDialog handleClose={handleClose} />}
-          {/* <Hidden xsDown> */}
-          {/* <AddIcon onClick={openFileInput} /> */}
           <button
             className="bg-blue-700 p-2 px-3 rounded-xl focus:outline-none"
             onClick={openFileInput}
@@ -243,7 +243,11 @@ function Links({ path }) {
               className={hasNotifications ? classes.notifications : ""}
               onClick={handleToggleList}
             >
-              {showList ? <LikeActiveIcon /> : <LikeIcon />}
+              {showList ? (
+                <NotificationsActiveIcon />
+              ) : (
+                <NotificationsNoneIcon />
+              )}
             </div>
           </RedTooltip>
           <Link to={`/${me.username}`}>

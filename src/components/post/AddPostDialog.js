@@ -23,7 +23,6 @@ import snarkdown from "snarkdown";
 import DOMPurify from "dompurify";
 import { ArrowBackIos } from "@material-ui/icons";
 import { UserContext } from "../../App";
-import serialize from "../../utils/serialize";
 import handleImageUpload from "../../utils/handleImageUpload";
 import { useMutation } from "@apollo/client";
 import { CREATE_POST } from "../../graphql/mutations";
@@ -190,7 +189,7 @@ function AddPostDialog({ handleClose }) {
         <ReactMarkdown
           source={serialiseMd(value)}
           escapeHtml={false}
-          className="prose"
+          className="prose w-auto"
           renderers={renderers}
           plugins={[gfm]}
           onChange={(e) => console.log("yup")}
