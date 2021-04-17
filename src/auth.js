@@ -106,6 +106,10 @@ function AuthProvider({ children }) {
     await authState.user.updateEmail(email);
   }
 
+  async function updatePassword(email) {
+    await authState.user.sendPasswordResetEmail(email);
+  }
+
   if (authState.status === "loading") {
     return null;
   } else {
@@ -118,6 +122,7 @@ function AuthProvider({ children }) {
           signOut,
           signUpWithEmailAndPassword,
           updateEmail,
+          updatePassword,
         }}
       >
         {children}
