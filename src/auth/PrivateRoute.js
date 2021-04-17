@@ -5,7 +5,6 @@ import { AuthContext } from "../auth";
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { authState } = React.useContext(AuthContext);
   const isAuth = authState.status === "in";
-  console.log({ isAuth });
   return (
     <Route
       {...rest}

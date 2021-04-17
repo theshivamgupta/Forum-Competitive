@@ -26,7 +26,7 @@ export async function fetchUserhandle(user) {
     const { data } = await axios.get(url);
     return data.result.slice(-1).pop().newRating;
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     return undefined;
   }
 }

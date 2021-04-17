@@ -62,7 +62,7 @@ function EditProfilePage({ history }) {
     }
   }
 
-  const options = ["Edit Profile", "Change Password"];
+  const options = ["Edit Profile", "Change Password", "Change CF handle"];
 
   const drawer = (
     <List>

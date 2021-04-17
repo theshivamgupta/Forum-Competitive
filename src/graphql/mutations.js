@@ -252,6 +252,17 @@ export const EDIT_LAST_LOGIN = gql`
   }
 `;
 
+export const EDIT_CODEFORCES = gql`
+  mutation editCodeforces($username: String!, $handle: String!, $rating: Int!) {
+    update_users(
+      where: { username: { _eq: $username } }
+      _set: { codeforces_handle: $handle, codeforces_rating: $rating }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
 /*
 
 CREATE_USER
