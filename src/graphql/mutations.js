@@ -253,10 +253,19 @@ export const EDIT_LAST_LOGIN = gql`
 `;
 
 export const EDIT_CODEFORCES = gql`
-  mutation editCodeforces($username: String!, $handle: String!, $rating: Int!) {
+  mutation editCodeforces(
+    $username: String!
+    $handle: String!
+    $rating: Int!
+    $lastlogin: String!
+  ) {
     update_users(
       where: { username: { _eq: $username } }
-      _set: { codeforces_handle: $handle, codeforces_rating: $rating }
+      _set: {
+        codeforces_handle: $handle
+        codeforces_rating: $rating
+        last_login: $lastlogin
+      }
     ) {
       affected_rows
     }

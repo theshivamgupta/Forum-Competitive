@@ -36,7 +36,11 @@ function EditProfilePage({ history }) {
   const classes = useEditProfilePageStyles();
   const path = history.location.pathname;
   const [showDrawer, setDrawer] = React.useState(false);
-
+  const [item, setItem] = React.useState({
+    edit: true,
+    changePass: false,
+    changeHandle: false,
+  });
   if (loading) return <LoadingScreen />;
 
   function handleToggleDrawer() {
@@ -46,7 +50,11 @@ function EditProfilePage({ history }) {
   function handleSelected(index) {
     switch (index) {
       case 0:
-        return path.includes("edit");
+        return item.edit;
+      case 1:
+        return item.changePass;
+      case 2:
+        return item.changeHandle;
       default:
         break;
     }
@@ -56,6 +64,28 @@ function EditProfilePage({ history }) {
     switch (index) {
       case 0:
         history.push("/accounts/edit");
+        setItem((prev) => ({
+          ...prev,
+          edit: true,
+          changePass: false,
+          changeHandle: false,
+        }));
+        break;
+      case 1:
+        setItem((prev) => ({
+          ...prev,
+          edit: false,
+          changePass: true,
+          changeHandle: false,
+        }));
+        break;
+      case 2:
+        setItem((prev) => ({
+          ...prev,
+          edit: false,
+          changePass: false,
+          changeHandle: true,
+        }));
         break;
       default:
         break;
@@ -123,7 +153,8 @@ function EditProfilePage({ history }) {
           </Hidden>
         </nav>
         <main>
-          {path.includes("edit") && <EditUserInfo user={data.users_by_pk} />}
+          {item.edit && <EditUserInfo user={data.users_by_pk} />}
+          {item.changePass && <ChangePassword user={data.users_by_pk} />}
         </main>
       </section>
     </Layout>
@@ -302,6 +333,122 @@ function EditUserInfo({ user }) {
         autoHideDuration={6000}
         TransitionComponent={Slide}
         message={<span>Profile updated</span>}
+        onClose={() => setOpen(false)}
+      />
+    </section>
+  );
+}
+
+function ChangePassword({ user }) {
+  const classes = useEditProfilePageStyles();
+  const { register, handleSubmit } = useForm({ mode: "onBlur" });
+  const [profileImage, setProfileImage] = React.useState(user.profile_image);
+  // const [editUser] = useMutation(EDIT_USER);
+  const { updatePassword } = React.useContext(AuthContext);
+  const [editUserAvatar] = useMutation(EDIT_USER_AVATAR);
+  const [error, setError] = React.useState(DEFAULT_ERROR);
+  const [open, setOpen] = React.useState(false);
+
+  async function onSubmit(data) {
+    try {
+      // console.log(data);
+      if (data.password !== data.confirm) {
+        console.log("was here");
+        setError({ type: "password", message: "Both Entries does not match" });
+        return;
+      }
+      // console.log(user.email);
+      await updatePassword(user.email);
+      console.log("after");
+      setOpen(true);
+    } catch (error) {
+      console.error("Error updating profile", error);
+      // handleError(error);
+    }
+  }
+
+  function handleError(error) {
+    if (error.code.includes("auth")) {
+      setError({ type: "email", message: error.message });
+    }
+  }
+
+  async function handleUpdateProfilePic(event) {
+    const url = await handleImageUpload(
+      event.target.files[0],
+      "instagram-avatar"
+    );
+    const variables = { id: user.id, profileImage: url };
+    await editUserAvatar({ variables });
+    setProfileImage(url);
+  }
+
+  return (
+    <section className={classes.container}>
+      <div className={classes.pictureSectionItem}>
+        <ProfilePicture size={38} image={profileImage} />
+        <div className={classes.justifySelfStart}>
+          <Typography className={classes.typography}>
+            {user.username}
+          </Typography>
+          <input
+            accept="image/*"
+            id="image"
+            type="file"
+            style={{ display: "none" }}
+            onChange={handleUpdateProfilePic}
+          />
+          <label htmlFor="image">
+            <Typography
+              color="primary"
+              variant="body2"
+              className={classes.typographyChangePic}
+            >
+              Change Profile Photo
+            </Typography>
+          </label>
+        </div>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+        <SectionItem
+          name="password"
+          inputRef={register({
+            required: true,
+            minLength: 5,
+            maxLength: 20,
+          })}
+          text="Password"
+          formItem={""}
+        />
+        <SectionItem
+          name="confirm"
+          error={error}
+          inputRef={register({
+            required: true,
+            // pattern: /^[a-zA-Z0-9_.]*$/,
+            minLength: 5,
+            maxLength: 20,
+          })}
+          text="Confirm Password"
+          formItem={""}
+        />
+        <div className={classes.sectionItem}>
+          <div />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.justifySelfStart}
+          >
+            Change Password
+          </Button>
+        </div>
+      </form>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        TransitionComponent={Slide}
+        message={<span>Email Sent!!</span>}
         onClose={() => setOpen(false)}
       />
     </section>

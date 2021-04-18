@@ -103,6 +103,7 @@ export default function TextMobileStepper() {
       username,
       handle: codeforcesHandle,
       rating: parseInt(codeforcesRating),
+      lastlogin: new Date().toISOString(),
     };
     await editCodeforces({ variables });
     setSpinner((prev) => !prev);

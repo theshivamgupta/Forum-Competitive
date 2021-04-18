@@ -107,7 +107,8 @@ function AuthProvider({ children }) {
   }
 
   async function updatePassword(email) {
-    await authState.user.sendPasswordResetEmail(email);
+    // console.log("! ", authState.user);
+    await firebase.auth().sendPasswordResetEmail(email);
   }
 
   if (authState.status === "loading") {
