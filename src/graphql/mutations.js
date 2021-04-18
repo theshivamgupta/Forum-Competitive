@@ -257,7 +257,7 @@ export const EDIT_CODEFORCES = gql`
     $username: String!
     $handle: String!
     $rating: Int!
-    $lastlogin: String!
+    $lastlogin: String
   ) {
     update_users(
       where: { username: { _eq: $username } }

@@ -32,6 +32,8 @@ export const GET_EDIT_USER_PROFILE = gql`
       profile_image
       website
       phone_number
+      codeforces_handle
+      codeforces_rating
     }
   }
 `;

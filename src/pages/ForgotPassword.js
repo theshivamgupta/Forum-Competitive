@@ -14,6 +14,10 @@ function ForgotPassword({ handleForgetPass }) {
     setValue(e.target.value);
   }
 
+  function handleForgotPass(e) {
+    e.preventDefault();
+  }
+
   return (
     <>
       <div className="container">
@@ -69,6 +73,7 @@ function ForgotPassword({ handleForgetPass }) {
                 color="primary"
                 className={classes.button}
                 type="submit"
+                onClick={handleForgotPass}
               >
                 Sent Password
               </Button>

@@ -25,9 +25,15 @@ import { useForm } from "react-hook-form";
 import isURL from "validator/lib/isURL";
 import isEmail from "validator/lib/isEmail";
 import isMobilePhone from "validator/lib/isMobilePhone";
-import { EDIT_USER, EDIT_USER_AVATAR } from "../graphql/mutations";
+import {
+  EDIT_CODEFORCES,
+  EDIT_USER,
+  EDIT_USER_AVATAR,
+} from "../graphql/mutations";
 import { AuthContext } from "../auth";
 import handleImageUpload from "../utils/handleImageUpload";
+import { fetchUserhandle } from "../utils/api/CodeForces";
+import Alert from "@material-ui/lab/Alert";
 
 function EditProfilePage({ history }) {
   const { currentUserId } = React.useContext(UserContext);
@@ -155,6 +161,7 @@ function EditProfilePage({ history }) {
         <main>
           {item.edit && <EditUserInfo user={data.users_by_pk} />}
           {item.changePass && <ChangePassword user={data.users_by_pk} />}
+          {item.changeHandle && <ChangeHandle user={data.users_by_pk} />}
         </main>
       </section>
     </Layout>
@@ -162,6 +169,113 @@ function EditProfilePage({ history }) {
 }
 
 const DEFAULT_ERROR = { type: "", message: "" };
+
+function ChangeHandle({ user }) {
+  const classes = useEditProfilePageStyles();
+  const { register, handleSubmit } = useForm({ mode: "onBlur" });
+  const [profileImage] = React.useState(user.profile_image);
+  // const [editUser] = useMutation(EDIT_USER);
+  const [error, setError] = React.useState(DEFAULT_ERROR);
+  const [open, setOpen] = React.useState(false);
+  const [rating, setRating] = React.useState(user?.codeforces_rating);
+  const [alert, setAlert] = React.useState(false);
+  const [editCodeforces] = useMutation(EDIT_CODEFORCES);
+
+  async function handleUpload(username, handle, rating) {
+    const variables = {
+      username,
+      handle,
+      rating: parseInt(rating),
+    };
+    console.log({ variables });
+    await editCodeforces({ variables });
+  }
+
+  async function onSubmit(data) {
+    try {
+      const response = await fetchUserhandle(data?.handle);
+      if (!response) {
+        setAlert(true);
+        return;
+      }
+      setRating(response);
+      await handleUpload(user?.username, data?.handle, response);
+      setOpen(true);
+    } catch (error) {
+      console.error("Error updating profile", error);
+      handleError(error);
+    }
+  }
+
+  function handleError(error) {
+    if (error.code.includes("auth")) {
+      setError({ type: "email", message: error.message });
+    }
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlert(false);
+  };
+
+  return (
+    <>
+      <Snackbar
+        open={alert}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleClose} severity="error" variant="filled">
+          Enter Valid handle!
+        </Alert>
+      </Snackbar>
+      <section className={classes.container}>
+        <div className={classes.pictureSectionItem}>
+          <ProfilePicture size={38} image={profileImage} />
+          <div className={classes.justifySelfStart}>
+            <Typography className={classes.typography}>
+              {user.username}
+            </Typography>
+          </div>
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+          <SectionItem
+            name="handle"
+            inputRef={register({
+              required: true,
+              minLength: 5,
+              maxLength: 20,
+            })}
+            text="CodeForces Handle"
+            formItem={user?.codeforces_handle}
+          />
+          <p>Rating {rating}</p>
+          <div className={classes.sectionItem}>
+            <div />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.justifySelfStart}
+            >
+              Change Handle
+            </Button>
+          </div>
+        </form>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          TransitionComponent={Slide}
+          message={<span>Handle Updated!</span>}
+          onClose={() => setOpen(false)}
+        />
+      </section>
+    </>
+  );
+}
 
 function EditUserInfo({ user }) {
   const classes = useEditProfilePageStyles();
@@ -455,7 +569,15 @@ function ChangePassword({ user }) {
   );
 }
 
-function SectionItem({ type = "text", text, formItem, inputRef, name, error }) {
+function SectionItem({
+  type = "text",
+  text,
+  formItem,
+  inputRef,
+  name,
+  error,
+  disable = false,
+}) {
   const classes = useEditProfilePageStyles();
 
   return (
@@ -473,6 +595,7 @@ function SectionItem({ type = "text", text, formItem, inputRef, name, error }) {
       <TextField
         name={name}
         inputRef={inputRef}
+        disabled={disable}
         helperText={error?.type === name && error.message}
         variant="outlined"
         fullWidth
