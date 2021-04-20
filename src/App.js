@@ -31,12 +31,6 @@ function App() {
   const userId = isAuth ? authState.user.uid : null;
   const variables = { userId };
   const { data, loading } = useSubscription(ME, { variables });
-  // const stuff = useSubscription(ME, { variables });
-  // console.log({ stuff });
-  // console.log({ ME });
-  // console.log({ isAuth });
-  // console.log({ variables });
-  // console.log({ data });
   const history = useHistory();
   const location = useLocation();
   const prevLocation = React.useRef(location);

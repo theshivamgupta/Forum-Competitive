@@ -1,25 +1,50 @@
-import { Button, Card, Hidden, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  Hidden,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
 import logo from "../images/logo.png";
 import blog from "../images/blog.jpg";
 import { useLoginPageStyles } from "../styles";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Link } from "react-router-dom";
-
+import { AuthContext } from "../auth";
+import isEmail from "validator/lib/isEmail";
+import ErrorAlert from "../components/shared/ErrorAlert";
+import Alert from "@material-ui/lab/Alert";
 function ForgotPassword({ handleForgetPass }) {
   const [value, setValue] = React.useState("");
+  const [error, setError] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
   const classes = useLoginPageStyles();
+  const { updatePassword } = React.useContext(AuthContext);
 
   function handleValue(e) {
     setValue(e.target.value);
   }
 
-  function handleForgotPass(e) {
+  async function handleForgotPass(e) {
     e.preventDefault();
+    if (!isEmail(value)) {
+      setError((prev) => !prev);
+      return;
+    }
+    await updatePassword(value);
+    setSuccess(true);
   }
 
   return (
     <>
+      {error && (
+        <ErrorAlert message={`Enter Valid Email`} setError={setError} />
+      )}
+      {success && (
+        <SuccessAlert message={`Reset Email Sent`} setSuccess={setSuccess} />
+      )}
       <div className="container">
         <div>
           <img src={logo} alt="logo" className="logo-container" />
@@ -92,6 +117,31 @@ function ForgotPassword({ handleForgetPass }) {
         </section>
       </div>
     </>
+  );
+}
+
+function SuccessAlert({ message, setSuccess }) {
+  const [alert, setAlert] = React.useState(true);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlert(false);
+    setSuccess(false);
+  };
+
+  return (
+    <Snackbar
+      open={alert}
+      autoHideDuration={3000}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+    >
+      <Alert onClose={handleClose} severity="success" variant="filled">
+        {message}
+      </Alert>
+    </Snackbar>
   );
 }
 

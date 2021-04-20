@@ -252,3 +252,15 @@ export const GET_LAST_LOGIN = gql`
     }
   }
 `;
+
+export const GET_HANDLES = gql`
+  query fetchHandles {
+    users {
+      id
+      profile_image
+      codeforces_handle
+      codeforces_rating
+      username
+    }
+  }
+`;
