@@ -35,7 +35,6 @@ function FeedPage() {
 
   React.useEffect(() => {
     if (!isPageBottom || !data) return;
-    const lastTimestamp = data.posts[data.posts.length - 1].created_at;
     // const variables = { limit: 2, feedIds, lastTimestamp };
     const variables = {};
     fetchMore({

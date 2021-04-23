@@ -10,6 +10,8 @@ export const ME = gql`
       profile_image
       created_at
       last_checked
+      codeforces_handle
+      codeforces_rating
       followers {
         user {
           id

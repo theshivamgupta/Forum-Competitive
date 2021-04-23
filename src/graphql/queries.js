@@ -264,3 +264,18 @@ export const GET_HANDLES = gql`
     }
   }
 `;
+
+export const GET_FRIENDS_HANDLE = gql`
+  query fetchFriendsHandle($userId: uuid!) {
+    followings(where: { user_id: { _eq: $userId } }) {
+      id
+      user {
+        id
+        codeforces_rating
+        codeforces_handle
+        profile_image
+        username
+      }
+    }
+  }
+`;
