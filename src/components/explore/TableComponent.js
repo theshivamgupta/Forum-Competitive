@@ -13,8 +13,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 // import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 // import FilterListIcon from "@material-ui/icons/FilterList";
@@ -190,7 +188,7 @@ export default function EnhancedTable({ handles }) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const [open, setOpen] = React.useState(false);
   const pushRow = React.useCallback(() => {
     // console.log({ handles });
     if (handles) setRows([]);
@@ -219,6 +217,11 @@ export default function EnhancedTable({ handles }) {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
+
+  function handleOpen(e) {
+    e.preventDefault();
+    setOpen((prev) => !prev);
+  }
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows?.length - page * rowsPerPage);
@@ -256,11 +259,9 @@ export default function EnhancedTable({ handles }) {
                         tabIndex={1}
                         key={row?.id}
                         selected={currentUserId === row?.id}
+                        onClick={handleOpen}
                       >
                         <TableCell padding="checkbox">
-                          {/* <Checkbox
-                            inputProps={{ "aria-labelledby": labelId }}
-                          /> */}
                           <Typography
                             className="p-2 font-extrabold"
                             variant="subtitle1"

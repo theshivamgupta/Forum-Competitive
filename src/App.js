@@ -22,6 +22,7 @@ import LoadingScreen from "./components/shared/LoadingScreen";
 import FirstLogin from "./pages/firstLogin";
 import PrivateRoute from "./auth/PrivateRoute";
 import GuestRoute from "./auth/GuestRoute";
+import Test from "./Test";
 
 export const UserContext = React.createContext();
 
@@ -68,6 +69,7 @@ function App() {
       <Switch location={isModalOpen ? prevLocation.current : location}>
         <GuestRoute exact path="/accounts/login" component={LoginPage} />
         <GuestRoute exact path="/accounts/emailsignup" component={SignUpPage} />
+        <PrivateRoute exact path="/t/test" component={Test} />
         <PrivateRoute exact path="/" component={FeedPage} />
         <PrivateRoute exact path="/explore" component={ExplorePage} />
         <PrivateRoute

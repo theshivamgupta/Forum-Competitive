@@ -31,4 +31,32 @@ export async function fetchUserhandle(user) {
   }
 }
 
+export async function fetchUserData(user) {
+  if (!user) {
+    return undefined;
+  }
+  const url = giveUrl(user);
+  let cancelToken;
+  try {
+    if (typeof cancelToken !== typeof undefined) {
+      cancelToken.cancel("token cancelled");
+    }
+    cancelToken = axios.CancelToken.source();
+    const { data } = await axios.get(url);
+    const modifiedData = data?.result?.map((contestData) => ({
+      contestId: contestData?.contestId,
+      contestName: contestData?.contestName,
+      handle: contestData?.handle,
+      rank: contestData?.rank,
+      rating: contestData?.newRating,
+      changedRating: contestData?.newRating - contestData?.oldRating,
+    }));
+    console.log(data.result);
+    return modifiedData;
+  } catch (err) {
+    console.error(err);
+    return undefined;
+  }
+}
+
 // export default giveAPi;
