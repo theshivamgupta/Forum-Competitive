@@ -51,7 +51,7 @@ export async function fetchUserData(user) {
       rating: contestData?.newRating,
       changedRating: contestData?.newRating - contestData?.oldRating,
     }));
-    console.log(data.result);
+    // console.log(data.result);
     return modifiedData;
   } catch (err) {
     console.error(err);

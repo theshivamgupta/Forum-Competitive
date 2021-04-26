@@ -18,6 +18,7 @@ import Switch from "@material-ui/core/Switch";
 // import FilterListIcon from "@material-ui/icons/FilterList";
 import { Avatar } from "@material-ui/core";
 import { UserContext } from "../../App";
+import { color } from "../../utils/color";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -281,7 +282,16 @@ export default function EnhancedTable({ handles }) {
                         <TableCell align="right">
                           <Avatar src={row?.profile_image} />
                         </TableCell>
-                        <TableCell>{row.codeforces_handle}</TableCell>
+                        <TableCell>
+                          <Typography
+                            style={{
+                              color: `${color(row.codeforces_rating)}`,
+                              fontWeight: "700",
+                            }}
+                          >
+                            {row.codeforces_handle}
+                          </Typography>
+                        </TableCell>
                         <TableCell align="right">
                           {row.codeforces_rating}
                         </TableCell>

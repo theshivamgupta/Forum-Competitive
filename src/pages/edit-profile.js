@@ -187,7 +187,6 @@ function ChangeHandle({ user }) {
       handle,
       rating: parseInt(rating),
     };
-    console.log({ variables });
     await editCodeforces({ variables });
   }
 
