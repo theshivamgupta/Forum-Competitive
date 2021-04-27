@@ -279,3 +279,12 @@ export const GET_FRIENDS_HANDLE = gql`
     }
   }
 `;
+
+export const FETCH_POST = gql`
+  query getPost($postId: uuid!) {
+    posts_by_pk(id: $postId) {
+      caption
+      media
+    }
+  }
+`;

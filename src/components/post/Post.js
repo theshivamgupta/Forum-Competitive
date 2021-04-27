@@ -1,7 +1,7 @@
 import React from "react";
 import { usePostStyles } from "../../styles";
 import { MoreIcon, RemoveIcon, SaveIcon } from "../../icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   Typography,
   Button,
@@ -43,6 +43,8 @@ function Post({ postId }) {
   const [openDialog, setDialog] = React.useState(false);
   const variables = { postId };
   const { data, loading } = useSubscription(GET_POST, { variables });
+  const history = useHistory();
+  const { currentUserId } = React.useContext(UserContext);
   // console.log(data);
   // setTimeout(() => setLoading(false), 2000);
   if (loading) return <PostSkeleton />;
@@ -69,6 +71,10 @@ function Post({ postId }) {
   function handleDialog(e) {
     e.preventDefault();
     setDialog((prev) => !prev);
+  }
+
+  function handleEditPost() {
+    history.push(`/up/${postId}/${currentUserId}`);
   }
 
   return (
@@ -151,6 +157,7 @@ function Post({ postId }) {
           postId={id}
           authorId={user.id}
           onClose={() => setDialog(false)}
+          onEdit={handleEditPost}
         />
       )}
     </div>

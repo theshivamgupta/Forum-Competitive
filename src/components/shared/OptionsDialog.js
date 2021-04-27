@@ -7,7 +7,7 @@ import { UserContext } from "../../App";
 import { useMutation } from "@apollo/client";
 import { UNFOLLOW_USER, DELETE_POST } from "../../graphql/mutations";
 
-function OptionsDialog({ onClose, authorId, postId }) {
+function OptionsDialog({ onClose, authorId, postId, onEdit }) {
   const classes = useOptionsDialogStyles();
   const { currentUserId, followingIds } = React.useContext(UserContext);
   const isOwner = authorId === currentUserId;
@@ -55,7 +55,12 @@ function OptionsDialog({ onClose, authorId, postId }) {
       )}
       <Divider />
       <Button className={classes.button}>Copy Link</Button>
-      <Divider />
+      {isOwner && <Divider />}
+      {isOwner && (
+        <Button onClick={onEdit} className={classes.button}>
+          Edit Post
+        </Button>
+      )}
       <Button onClick={onClose} className={classes.button}>
         Cancel
       </Button>

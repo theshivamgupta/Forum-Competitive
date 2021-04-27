@@ -272,6 +272,17 @@ export const EDIT_CODEFORCES = gql`
   }
 `;
 
+export const EDIT_POST = gql`
+  mutation updatePost($postId: uuid!, $title: String!, $content: String!) {
+    update_posts(
+      where: { id: { _eq: $postId } }
+      _set: { caption: $content, media: $title }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
 /*
 
 CREATE_USER

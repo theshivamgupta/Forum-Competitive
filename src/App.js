@@ -23,6 +23,7 @@ import FirstLogin from "./pages/firstLogin";
 import PrivateRoute from "./auth/PrivateRoute";
 import GuestRoute from "./auth/GuestRoute";
 import Test from "./Test";
+import UpdatePost from "./pages/UpdatePost";
 
 export const UserContext = React.createContext();
 
@@ -77,6 +78,7 @@ function App() {
           path="/:username/firstLogin"
           component={FirstLogin}
         />
+        <PrivateRoute exact path="/up/:postId/:userId" component={UpdatePost} />
         <PrivateRoute exact path="/p/:postId" component={PostPage} />
         <PrivateRoute path="/accounts/edit" component={EditProfilePage} />
         <PrivateRoute exact path="/:username" component={ProfilePage} />
