@@ -74,7 +74,7 @@ function Post({ postId }) {
   return (
     <div
       className="app-container"
-      style={{ width: isMobile ? "100vw" : "70vw" }}
+      style={{ width: isMobile ? "80vw" : "70vw", marginLeft: "-30px" }}
     >
       <Paper
         className="contain"
@@ -93,11 +93,11 @@ function Post({ postId }) {
               </Link>
             </div>
             <div className="title-container">{media}</div>
-            <div className="like-container">
+            <div className="like-container flex">
               {/* <ThumbUpAltOutlinedIcon style={{ marginRight: "10px" }} /> */}
               <LikeButton likes={likes} postId={id} authorId={user.id} />
               {/* <div></div> */}
-              <p>{`${likesCount} likes`}</p>
+              <span>{`${likesCount} ${isMobile ? "" : "likes"}`}</span>
             </div>
           </div>
           <div className="content-container">
@@ -352,11 +352,11 @@ function Comment({ postId, comments, isMobile, isTablet }) {
           />
         )}
       </div>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex space-between" }}>
         <Button
           color="primary"
           style={{
-            marginRight: isMobile ? "200px" : isTablet ? "400px" : "600px",
+            marginRight: isMobile ? "200px" : isTablet ? "400px" : "750px",
           }}
           onClick={handlePreview}
           disabled={!value.trim()}

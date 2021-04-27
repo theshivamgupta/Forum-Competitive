@@ -54,12 +54,6 @@ function OptionsDialog({ onClose, authorId, postId }) {
         </Button>
       )}
       <Divider />
-      <Button className={classes.button}>
-        <Link to={`/p/${postId}`}>Go to post</Link>
-      </Button>
-      <Divider />
-      <Button className={classes.button}>Share</Button>
-      <Divider />
       <Button className={classes.button}>Copy Link</Button>
       <Divider />
       <Button onClick={onClose} className={classes.button}>

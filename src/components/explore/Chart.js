@@ -24,7 +24,7 @@ const LineChart = ({ res }) => {
     <>
       <Line
         data={{
-          labels: points.map((user) => `${user?.contestName}`),
+          labels: points.map((user) => `${user?.contestId}`),
           datasets: [
             {
               data: points.map(({ rating }) => rating),
@@ -51,27 +51,26 @@ const Chart = React.forwardRef(({ handleDetail, handleClose }, ref) => {
   }, [handleDetail]);
 
   return (
-    <div
-      className="bg-white p-5 flex justify-between overflow-hidden"
-      style={{ width: "60vw" }}
-    >
-      <div>
-        <div style={{ color: `${color(rating)}`, fontWeight: "700" }}>
-          {handle}
+    <main className="bg-white p-5" style={{ width: "70vw" }}>
+      <div className="flex justify-between overflow-hidden">
+        <div>
+          <div style={{ color: `${color(rating)}`, fontWeight: "700" }}>
+            {handle}
+          </div>
+          <div className="underline">
+            <a
+              href={`https://codeforces.com/profile/${handle}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Profile
+            </a>
+          </div>
         </div>
-        <div className="underline">
-          <a
-            href={`https://codeforces.com/profile/${handle}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Profile
-          </a>
-        </div>
+        <CloseIcon onClick={handleClose} />
       </div>
-      <CloseIcon onClick={handleClose} />
-      {res && <LineChart res={res} />}
-    </div>
+      <div className="w-full">{res && <LineChart res={res} />}</div>
+    </main>
   );
 });
 

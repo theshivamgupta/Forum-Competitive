@@ -20,7 +20,7 @@ const LineChart = ({ res }) => {
 
   return (
     <>
-      <button onClick={() => console.log(points)}>See</button>
+      {/* <button onClick={() => console.log(points)}>See</button> */}
       <Line
         data={{
           labels: points.map((user) => `${user?.contestName}`),

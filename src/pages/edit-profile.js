@@ -186,6 +186,7 @@ function ChangeHandle({ user }) {
       username,
       handle,
       rating: parseInt(rating),
+      lastlogin: new Date().toISOString(),
     };
     await editCodeforces({ variables });
   }
