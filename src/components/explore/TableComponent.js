@@ -16,9 +16,10 @@ import Paper from "@material-ui/core/Paper";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 // import FilterListIcon from "@material-ui/icons/FilterList";
-import { Avatar } from "@material-ui/core";
+import { Avatar, Modal } from "@material-ui/core";
 import { UserContext } from "../../App";
 import { color } from "../../utils/color";
+import Chart from "./Chart";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -180,6 +181,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function Modals({ open, setOpen, handleDetail }) {
+  const chartRef = React.useRef(null);
+
+  function handleClose() {
+    setOpen(false);
+  }
+
+  return (
+    <div className="flex justify-center items-center">
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        className={`flex justify-center items-center`}
+      >
+        <Chart
+          handleDetail={handleDetail}
+          handleClose={handleClose}
+          ref={chartRef}
+        />
+        {/* <CloseIcon /> */}
+      </Modal>
+    </div>
+  );
+}
+
 export default function EnhancedTable({ handles }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -190,6 +218,11 @@ export default function EnhancedTable({ handles }) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
+  const [handleDetail, setHandleDetail] = React.useState({
+    handle: "",
+    rating: 0,
+  });
+
   const pushRow = React.useCallback(() => {
     // console.log({ handles });
     if (handles) setRows([]);
@@ -219,8 +252,14 @@ export default function EnhancedTable({ handles }) {
     setDense(event.target.checked);
   };
 
-  function handleOpen(e) {
+  function handleOpen(e, codeforces_handle, codeforces_rating) {
     e.preventDefault();
+    console.log("clicked");
+    setHandleDetail((prev) => ({
+      ...prev,
+      handle: codeforces_handle,
+      rating: parseInt(codeforces_rating),
+    }));
     setOpen((prev) => !prev);
   }
 
@@ -230,6 +269,9 @@ export default function EnhancedTable({ handles }) {
   return (
     <div className={classes.root}>
       {/* <button onClick={() => console.log(rows[0])}>Click</button> */}
+      {open && (
+        <Modals open={open} setOpen={setOpen} handleDetail={handleDetail} />
+      )}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
         <TableContainer>
@@ -260,7 +302,14 @@ export default function EnhancedTable({ handles }) {
                         tabIndex={1}
                         key={row?.id}
                         selected={currentUserId === row?.id}
-                        onClick={handleOpen}
+                        onClick={(e) =>
+                          handleOpen(
+                            e,
+                            row?.codeforces_handle,
+                            row?.codeforces_rating
+                          )
+                        }
+                        style={{ cursor: "pointer" }}
                       >
                         <TableCell padding="checkbox">
                           <Typography
