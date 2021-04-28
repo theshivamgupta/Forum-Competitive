@@ -84,6 +84,7 @@ export const GET_USER_PROFILE = gql`
       }
       posts(order_by: { created_at: desc }) {
         ...gridPostFields
+        created_at
       }
     }
   }
