@@ -16,12 +16,18 @@ export const ME = gql`
         user {
           id
           user_id
+          profile_image
+          name
+          username
         }
       }
       followings {
         user {
           id
           user_id
+          profile_image
+          name
+          username
         }
       }
       notifications(order_by: { created_at: desc }) {

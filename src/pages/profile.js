@@ -31,12 +31,21 @@ import { UserContext } from "../App";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { color } from "../utils/color";
 import FeedPostSkeleton from "../components/feed/FeedPostSkeleton";
+// import UserStackCard from "../components/profile/UserStackCard";
 const StackCard = React.lazy(() => import("../components/shared/StackCard"));
+const UserStackCard = React.lazy(() =>
+  import("../components/profile/UserStackCard")
+);
 function ProfilePage() {
   const { username } = useParams();
-  const { currentUserId } = React.useContext(UserContext);
-  // console.log(me);
-  // const classes = useProfilePageStyles();
+  const { currentUserId, me } = React.useContext(UserContext);
+  console.log(me?.followings);
+  const [activeTab, setActiveTab] = React.useState({
+    profile: true,
+    followers: false,
+    followings: false,
+  });
+
   const variables = { username };
   const { data, loading, error } = useQuery(GET_USER_PROFILE, {
     variables,
@@ -53,19 +62,49 @@ function ProfilePage() {
       style={{ margin: "0 auto" }}
     >
       <Container>
-        <ProfileMainCard user={user} isOwner={isOwner} />
+        <ProfileMainCard
+          user={user}
+          isOwner={isOwner}
+          setActiveTab={setActiveTab}
+        />
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <ProfileSideCard user={user} />
           </Grid>
           <Grid item xs={12} md={8}>
-            {user?.posts.map((post) => {
-              return (
-                <React.Suspense key={post?.id} fallback={<FeedPostSkeleton />}>
-                  <StackCard post={post} user={user} />
-                </React.Suspense>
-              );
-            })}
+            {activeTab.profile &&
+              user?.posts.map((post) => {
+                return (
+                  <React.Suspense
+                    key={post?.id}
+                    fallback={<FeedPostSkeleton />}
+                  >
+                    <StackCard post={post} user={user} />
+                  </React.Suspense>
+                );
+              })}
+            {activeTab.followers &&
+              me?.followers.map((follower) => {
+                return (
+                  <React.Suspense
+                    key={follower?.user?.id}
+                    fallback={<FeedPostSkeleton />}
+                  >
+                    <UserStackCard friend={follower} />
+                  </React.Suspense>
+                );
+              })}
+            {activeTab.followings &&
+              me?.followings.map((following) => {
+                return (
+                  <React.Suspense
+                    key={following?.user?.id}
+                    fallback={<FeedPostSkeleton />}
+                  >
+                    <UserStackCard friend={following} />
+                  </React.Suspense>
+                );
+              })}
           </Grid>
         </Grid>
       </Container>
@@ -73,7 +112,7 @@ function ProfilePage() {
   );
 }
 
-function ProfileMainCard({ user, isOwner }) {
+function ProfileMainCard({ user, isOwner, setActiveTab }) {
   const classes = useProfileMainStyles();
   const [value, setValue] = React.useState(0);
   const [showOption, setShowOption] = React.useState(false);
@@ -233,9 +272,42 @@ function ProfileMainCard({ user, isOwner }) {
               textColor="primary"
               centered
             >
-              <Tab className={classes.navtab} label="Profile" />
-              <Tab className={classes.navtab} label="Followers" />
-              <Tab className={classes.navtab} label="Following" />
+              <Tab
+                className={classes.navtab}
+                label="Profile"
+                onClick={() => {
+                  setActiveTab((prev) => ({
+                    ...prev,
+                    profile: true,
+                    followers: false,
+                    followings: false,
+                  }));
+                }}
+              />
+              <Tab
+                className={classes.navtab}
+                label="Followers"
+                onClick={() => {
+                  setActiveTab((prev) => ({
+                    ...prev,
+                    profile: false,
+                    followers: true,
+                    followings: false,
+                  }));
+                }}
+              />
+              <Tab
+                className={classes.navtab}
+                label="Following"
+                onClick={() => {
+                  setActiveTab((prev) => ({
+                    ...prev,
+                    profile: false,
+                    followers: false,
+                    followings: true,
+                  }));
+                }}
+              />
             </Tabs>
           </Grid>
         </Grid>
