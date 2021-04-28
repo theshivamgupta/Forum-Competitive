@@ -59,6 +59,8 @@ export const GET_USER_PROFILE = gql`
       username
       website
       bio
+      codeforces_handle
+      codeforces_rating
       profile_image
       posts_aggregate {
         aggregate {

@@ -1,11 +1,13 @@
 import React from "react";
-import { useProfilePageStyles } from "../styles";
+import {
+  useProfilePageStyles,
+  useProfileSideStyles,
+  useProfileMainStyles,
+  useStackCardStyles,
+} from "../styles";
 import Layout from "../components/shared/Layout";
-import ProfilePicture from "../components/shared/ProfilePicture";
 import {
   Hidden,
-  Card,
-  CardContent,
   Button,
   Typography,
   Dialog,
@@ -13,6 +15,12 @@ import {
   Divider,
   DialogTitle,
   Avatar,
+  Container,
+  Grid,
+  Paper,
+  makeStyles,
+  Tabs,
+  Tab,
 } from "@material-ui/core";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { GearIcon } from "../icons";
@@ -23,11 +31,13 @@ import { GET_USER_PROFILE } from "../graphql/queries";
 import { FOLLOW_USER, UNFOLLOW_USER } from "../graphql/mutations";
 import LoadingScreen from "../components/shared/LoadingScreen";
 import { UserContext } from "../App";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import { color } from "../utils/color";
 
 function ProfilePage() {
   const { username } = useParams();
   const { currentUserId } = React.useContext(UserContext);
-  const classes = useProfilePageStyles();
+  // const classes = useProfilePageStyles();
   const [showOptionsMenu, setOptionsMenu] = React.useState(false);
   const variables = { username };
   const { data, loading, error } = useQuery(GET_USER_PROFILE, {
@@ -36,19 +46,15 @@ function ProfilePage() {
   });
   if (loading) return <LoadingScreen />;
   const [user] = data.users;
+  console.log({ user });
   const isOwner = user?.id === currentUserId;
 
-  function handleOptionsMenuClick() {
-    setOptionsMenu(true);
-  }
-
-  function handleCloseMenu() {
-    setOptionsMenu(false);
-  }
-
   return (
-    <Layout title={`${user.name} (@${user.username})`}>
-      <div className={classes.container}>
+    <Layout
+      title={`${user.name} (@${user.username})`}
+      style={{ margin: "0 auto" }}
+    >
+      {/* <div className={classes.container}>
         <Hidden xsDown>
           <Card className={classes.cardLarge}>
             <ProfilePicture isOwner={isOwner} image={user.profile_image} />
@@ -85,8 +91,232 @@ function ProfilePage() {
         </Hidden>
         {showOptionsMenu && <OptionsMenu handleCloseMenu={handleCloseMenu} />}
         <ProfileTabs user={user} isOwner={isOwner} />
-      </div>
+      </div> */}
+      <Container>
+        <ProfileMainCard user={user} isOwner={isOwner} />
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4}>
+            <ProfileSideCard user={user} />
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <StackCard />
+            <StackCard />
+            <StackCard />
+            <StackCard />
+            <StackCard />
+            <StackCard />
+          </Grid>
+        </Grid>
+      </Container>
     </Layout>
+  );
+}
+
+function ProfileMainCard({ user, isOwner }) {
+  const classes = useProfileMainStyles();
+  const [value, setValue] = React.useState(0);
+  const [showOption, setShowOption] = React.useState(false);
+  const [showUnfollowDialog, setUnfollowDialog] = React.useState(false);
+
+  const { currentUserId, followingIds, followerIds } = React.useContext(
+    UserContext
+  );
+  const isAlreadyFollowing = followingIds.some((id) => id === user.id);
+  const [isFollowing, setFollowing] = React.useState(isAlreadyFollowing);
+  const isFollower = !isFollowing && followerIds.some((id) => id === user.id);
+  const variables = {
+    userIdToFollow: user.id,
+    currentUserId,
+  };
+  const [followUser] = useMutation(FOLLOW_USER);
+
+  let followButton;
+  // const isFollowing = true;
+  if (isFollowing) {
+    followButton = (
+      <Button
+        onClick={() => setUnfollowDialog(true)}
+        variant="outlined"
+        className={classes.button}
+      >
+        Following
+      </Button>
+    );
+  } else if (isFollower) {
+    followButton = (
+      <Button
+        onClick={handleFollowUser}
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        style={{
+          fontSize: "12px",
+        }}
+      >
+        Follow Back
+      </Button>
+    );
+  } else {
+    followButton = (
+      <Button
+        onClick={handleFollowUser}
+        variant="contained"
+        color="primary"
+        className={classes.button}
+      >
+        Follow
+      </Button>
+    );
+  }
+
+  function handleFollowUser() {
+    setFollowing(true);
+    followUser({ variables });
+  }
+
+  const onUnfollowUser = React.useCallback(() => {
+    setUnfollowDialog(false);
+    setFollowing(false);
+  }, []);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  function handleCloseMenu() {
+    setShowOption(false);
+  }
+
+  return (
+    <div>
+      <Paper className={classes.covercard}>
+        <Grid className={classes.cover} container>
+          <Grid className={classes.coverimg} item xs={12}></Grid>
+          <Grid className={classes.profile} item xs={12}>
+            <Grid style={{ height: "100%", width: "100%" }} container>
+              <Grid className={classes.profilepic} item xs={4} md={3}>
+                <Avatar
+                  className={classes.profileimg}
+                  alt="John Doe"
+                  src={user.profile_image}
+                ></Avatar>
+              </Grid>
+              <Grid className={classes.profileinfo} item xs={7} md={6}>
+                <Grid container style={{ width: "100%", height: "100%" }}>
+                  <Grid item xs={12}>
+                    <Typography className={classes.name}>
+                      {user?.name}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography className={classes.username}>
+                      {user?.username}
+                    </Typography>
+                    <Typography
+                      className={classes.codeforces}
+                      style={{
+                        color: `${color(user?.codeforces_rating)}`,
+                        fontWeight: "700",
+                      }}
+                    >
+                      {`(${user?.codeforces_handle})`}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography className={classes.bio}>{user?.bio}</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid className={classes.coverButtons} item xs={1} md={3}>
+                <div className={classes.editprofile}>
+                  <Hidden smDown>
+                    {isOwner ? (
+                      <Link to="/accounts/edit">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          startIcon={<EditOutlinedIcon />}
+                        >
+                          Edit Profile
+                        </Button>
+                      </Link>
+                    ) : (
+                      <>{followButton}</>
+                    )}
+                  </Hidden>
+                  <div onClick={() => setShowOption((prev) => !prev)}>
+                    <svg
+                      aria-label="Options"
+                      className={classes.settings}
+                      fill="#262626"
+                      height="24"
+                      viewBox="0 0 48 48"
+                      width="24"
+                    >
+                      <path
+                        clipRule="evenodd"
+                        d="M46.7 20.6l-2.1-1.1c-.4-.2-.7-.5-.8-1-.5-1.6-1.1-3.2-1.9-4.7-.2-.4-.3-.8-.1-1.2l.8-2.3c.2-.5 0-1.1-.4-1.5l-2.9-2.9c-.4-.4-1-.5-1.5-.4l-2.3.8c-.4.1-.8.1-1.2-.1-1.4-.8-3-1.5-4.6-1.9-.4-.1-.8-.4-1-.8l-1.1-2.2c-.3-.5-.8-.8-1.3-.8h-4.1c-.6 0-1.1.3-1.3.8l-1.1 2.2c-.2.4-.5.7-1 .8-1.6.5-3.2 1.1-4.6 1.9-.4.2-.8.3-1.2.1l-2.3-.8c-.5-.2-1.1 0-1.5.4L5.9 8.8c-.4.4-.5 1-.4 1.5l.8 2.3c.1.4.1.8-.1 1.2-.8 1.5-1.5 3-1.9 4.7-.1.4-.4.8-.8 1l-2.1 1.1c-.5.3-.8.8-.8 1.3V26c0 .6.3 1.1.8 1.3l2.1 1.1c.4.2.7.5.8 1 .5 1.6 1.1 3.2 1.9 4.7.2.4.3.8.1 1.2l-.8 2.3c-.2.5 0 1.1.4 1.5L8.8 42c.4.4 1 .5 1.5.4l2.3-.8c.4-.1.8-.1 1.2.1 1.4.8 3 1.5 4.6 1.9.4.1.8.4 1 .8l1.1 2.2c.3.5.8.8 1.3.8h4.1c.6 0 1.1-.3 1.3-.8l1.1-2.2c.2-.4.5-.7 1-.8 1.6-.5 3.2-1.1 4.6-1.9.4-.2.8-.3 1.2-.1l2.3.8c.5.2 1.1 0 1.5-.4l2.9-2.9c.4-.4.5-1 .4-1.5l-.8-2.3c-.1-.4-.1-.8.1-1.2.8-1.5 1.5-3 1.9-4.7.1-.4.4-.8.8-1l2.1-1.1c.5-.3.8-.8.8-1.3v-4.1c.4-.5.1-1.1-.4-1.3zM24 41.5c-9.7 0-17.5-7.8-17.5-17.5S14.3 6.5 24 6.5 41.5 14.3 41.5 24 33.7 41.5 24 41.5z"
+                        fillRule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid className={classes.navigation} xs={12}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              centered
+            >
+              <Tab className={classes.navtab} label="Profile" />
+              <Tab className={classes.navtab} label="Followers" />
+              <Tab className={classes.navtab} label="Following" />
+            </Tabs>
+          </Grid>
+        </Grid>
+      </Paper>
+      {showOption && <OptionsMenu handleCloseMenu={handleCloseMenu} />}
+      {showUnfollowDialog && (
+        <UnfollowDialog
+          onUnfollowUser={onUnfollowUser}
+          user={user}
+          onClose={() => setUnfollowDialog(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+function ProfileSideCard({ user }) {
+  const classes = useProfileSideStyles();
+
+  return (
+    <div>
+      <Paper className={classes.sidecard} elevation={3}>
+        <Grid className={classes.frienddata} container spacing={1}>
+          <Grid className={classes.data} item xs={3}>
+            <Typography className={classes.friends}>Followers</Typography>
+          </Grid>
+          <Grid className={classes.data} item xs={3}>
+            <Typography className={classes.number}>
+              {user[`followers_aggregate`]?.aggregate?.count}
+            </Typography>
+          </Grid>
+          <Grid className={classes.data} item xs={3}>
+            <Typography className={classes.friends}>Following</Typography>
+          </Grid>
+          <Grid className={classes.data} item xs={3}>
+            <Typography className={classes.number}>
+              {user[`followings_aggregate`]?.aggregate?.count}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Paper>
+    </div>
   );
 }
 
@@ -308,6 +538,59 @@ function NameBioSection({ user }) {
         </Typography>
       </a>
     </section>
+  );
+}
+
+function StackCard() {
+  const classes = useStackCardStyles();
+
+  return (
+    <div>
+      <Paper className={classes.stackitem} elevation={1}>
+        <Grid className={classes.maingrid} container spacing={2}>
+          <Grid className={classes.usericon} item xs={3} sm={2}>
+            <Avatar
+              className={classes.avatar}
+              alt="Remy Sharp"
+              src="https://thispersondoesnotexist.com/image"
+            />
+            <Hidden smDown>
+              <Typography className={classes.user} variant="caption">
+                Remy Sharp
+              </Typography>
+            </Hidden>
+          </Grid>
+          <Grid className={classes.post} item xs={9} sm={8}>
+            <Divider
+              className={classes.divider}
+              orientation="vertical"
+              flexItem
+              light
+            />
+            <div className={classes.mainpost}>
+              <Typography className={classes.content}>Hi There</Typography>
+              <Typography className={classes.timestamp}>
+                Posted 2 hours ago
+              </Typography>
+            </div>
+            <Hidden smDown>
+              <Divider
+                className={classes.divider}
+                orientation="vertical"
+                flexItem
+                light
+              />
+            </Hidden>
+          </Grid>
+          <Hidden smDown>
+            <Grid className={classes.likes} item sm={2}>
+              {/* <FavoriteIcon className={classes.likeicon}/> */}
+              <Typography className={classes.likecount}>23</Typography>
+            </Grid>
+          </Hidden>
+        </Grid>
+      </Paper>
+    </div>
   );
 }
 

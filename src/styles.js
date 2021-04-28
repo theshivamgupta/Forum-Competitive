@@ -191,6 +191,7 @@ export const useNavbarStyles = makeStyles((theme) => ({
     alignItems: "center",
     order: 0,
     zIndex: "100 !important",
+    paddingBottom: 10,
   },
   section: {
     alignItems: "center",
@@ -452,10 +453,11 @@ export const useLayoutStyles = makeStyles((theme) => ({
     display: "flex",
     margin: "0 auto",
     flexFlow: "row nowrap",
-    maxWidth: "935px !important",
+    // maxWidth: "900px !important",
   },
   children: {
     width: "100%",
+    margin: "0 auto",
   },
 }));
 
@@ -1765,5 +1767,247 @@ export const useAddPostDialogStyles = makeStyles((theme) => ({
     "&:hover&:before": {
       border: "none !important",
     },
+  },
+}));
+
+export const useProfileSideStyles = makeStyles((theme) => ({
+  sidecard: {
+    width: "90%",
+    padding: "5%",
+  },
+  frienddata: {
+    width: "100%",
+  },
+  data: {
+    display: "flex",
+    alignItems: "center",
+  },
+  friends: {
+    display: "inline-block",
+    fontFamily: "Trebuchet MS",
+    fontWeight: "700",
+  },
+  number: {
+    display: "inline-block",
+    fontFamily: "Trebuchet MS",
+    fontWeight: "700",
+    fontSize: "120%",
+    color: "#4267B2",
+  },
+}));
+
+export const useProfileMainStyles = makeStyles((theme) => ({
+  covercard: {
+    height: "450px",
+    width: "100%",
+    margin: "auto",
+    marginBottom: "2%",
+  },
+  cover: {
+    height: "100%",
+  },
+  coverimg: {
+    height: "55%",
+    background:
+      "url('https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg') no-repeat center center",
+    backgroundSize: "cover",
+  },
+  profile: {
+    height: "35%",
+  },
+  profilepic: {
+    display: "flex",
+    justifyContent: "flex-end",
+    position: "relative",
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "center",
+    },
+  },
+  profileimg: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    width: "150px",
+    height: "150px",
+    top: "-65px",
+    border: "5px solid #ededed",
+    [theme.breakpoints.down("md")]: {
+      width: "120px",
+      height: "120px",
+      top: "-60px",
+    },
+  },
+  profileinfo: {
+    width: "96%",
+    padding: "2%",
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+  name: {
+    fontFamily: "Trebuchet MS",
+    fontWeight: "700",
+    width: "100%",
+    fontSize: "200%",
+    height: "30px",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "170%",
+    },
+  },
+  username: {
+    display: "inline-block",
+    fontFamily: "Trebuchet MS",
+    fontWeight: "700",
+    fontSize: "120%",
+    color: "#4267B2",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "110%",
+    },
+  },
+  codeforces: {
+    display: "inline-block",
+    fontFamily: "Trebuchet MS",
+    fontWeight: "400",
+    fontSize: "120%",
+    color: "#8d8d8d",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "110%",
+    },
+  },
+  bio: {
+    fontFamily: "Trebuchet MS",
+    fontWeight: "400",
+    fontSize: "120%",
+    color: "#747474",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "100%",
+    },
+  },
+  coverButtons: {
+    display: "flex",
+    padding: "2%",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+  },
+  editprofile: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "space-between",
+  },
+  settings: {
+    height: "inherit",
+    width: "30px",
+    transition: "0.5s",
+    cursor: "pointer",
+    "&:hover": {
+      transform: "rotate(360deg) scale(1.1)",
+    },
+  },
+  navigation: {
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "center",
+  },
+  navtab: {
+    fontFamily: "Trebuchet MS",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "100%",
+    },
+  },
+}));
+
+export const useStackCardStyles = makeStyles((theme) => ({
+  stackitem: {
+    width: "100%",
+    height: "100px",
+    margin: "auto",
+    marginBottom: "20px",
+    transition: "0.4s",
+    [theme.breakpoints.up("md")]: {
+      height: "120px",
+    },
+    "&:hover": {
+      backgroundColor: "#f5f5f5",
+    },
+  },
+  maingrid: {
+    height: "100%",
+  },
+  divider: {
+    height: "80px",
+    alignSelf: "center",
+  },
+  usericon: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    flexWrap: "wrap",
+    transition: "0.15s",
+    cursor: "pointer",
+    "&:hover": {
+      color: "#F23A3A",
+    },
+  },
+  avatar: {
+    height: "43px",
+    width: "43px",
+    [theme.breakpoints.up("md")]: {
+      height: "50px",
+      width: "50px",
+    },
+  },
+  user: {
+    fontFamily: "Verdana",
+    marginTop: "3%",
+    fontWeight: "700",
+  },
+  post: {
+    display: "flex",
+    justifyContent: "space-between",
+    transition: "0.15s",
+    "&:hover": {
+      color: "#F23A3A",
+    },
+  },
+  mainpost: {
+    display: "flex",
+    width: "90%",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  content: {
+    fontFamily: "Trebuchet MS",
+    fontWeight: "700",
+    fontSize: "115%",
+    cursor: "pointer",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "130%",
+    },
+  },
+  timestamp: {
+    fontFamily: "Lucida Console",
+    fontSize: "80%",
+    color: "#7e7e7e",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "90%",
+    },
+  },
+  likes: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  likeicon: {
+    color: "#F23A3A",
+    height: "30px",
+    width: "30px",
+  },
+  likecount: {
+    fontWeight: "700",
+    fontFamily: "Lucida Console",
+    fontSize: "85%",
   },
 }));

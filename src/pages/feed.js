@@ -48,7 +48,7 @@ function FeedPage() {
 
   return (
     <Layout>
-      <div className={classes.container}>
+      <div>
         {/* Feed Posts */}
         <div>
           {data?.posts.map((post, index) => (
