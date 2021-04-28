@@ -17,6 +17,7 @@ import { formatDateToNow } from "../../utils/formatDate";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 // import "./Post.css";
 // import Img from "react-graceful-image";
 import {
@@ -30,16 +31,17 @@ import { GET_FEED } from "../../graphql/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { UserContext } from "../../App";
 import { GET_POST } from "../../graphql/queries";
+import { useMediaQuery } from "react-responsive";
 
 const useStyles = makeStyles((theme) => ({
   stackitem: {
-    width: "90%",
+    // width: "900px",
     height: "100px",
     margin: "auto",
     marginTop: "20px",
     transition: "0.4s",
     [theme.breakpoints.up("md")]: {
-      width: "100%",
+      // width: "65%",
       height: "120px",
     },
     "&:hover": {
@@ -117,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   likeicon: {
-    color: "#F23A3A",
+    // color: "#F23A3A",
     height: "30px",
     width: "30px",
   },
@@ -133,7 +135,7 @@ function FeedPost({ post, index }) {
   // const [showOptionsDialog, setOptionsDialog] = React.useState(false);
   const { currentUserId } = React.useContext(UserContext);
   const { id, media, likes, likes_aggregate, user, created_at } = post;
-
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 560px)" });
   const postId = id;
   const classes = useStyles();
   const variables = { postId };
@@ -167,46 +169,49 @@ function FeedPost({ post, index }) {
     //   </div>
     // </div>
     <div>
-      <Paper className={classes.stackitem} elevation={1}>
+      <Paper
+        className={classes.stackitem}
+        elevation={1}
+        style={{ width: isTabletOrMobile ? "380px" : "900px" }}
+      >
         <Grid className={classes.maingrid} container spacing={2}>
           <Grid className={classes.usericon} item xs={3} sm={2}>
-            <Avatar
-              className={classes.avatar}
-              alt="Remy Sharp"
-              src="https://thispersondoesnotexist.com/image"
-            />
-            <Hidden smDown>
-              <Typography className={classes.user} variant="caption">
-                Remy Sharp
-              </Typography>
-            </Hidden>
+            <Link to={`/${data?.posts_by_pk?.user?.username}`}>
+              <Avatar
+                className={classes.avatar}
+                alt="UserImage"
+                src={data?.posts_by_pk?.user?.profile_image}
+              />
+              <Hidden smDown>
+                <Typography className={classes.user} variant="caption">
+                  {data?.posts_by_pk?.user?.username}
+                </Typography>
+              </Hidden>
+            </Link>
           </Grid>
           <Grid className={classes.post} item xs={9} sm={8}>
-            <Divider
-              className={classes.divider}
-              orientation="vertical"
-              flexItem
-              light
-            />
             <div className={classes.mainpost}>
-              <Typography className={classes.content}>Hi There</Typography>
-              <Typography className={classes.timestamp}>
-                Posted 2 hours ago
-              </Typography>
+              <Link to={`/p/${data?.posts_by_pk?.id}`}>
+                <Typography className={classes.content}>{media}</Typography>
+                <Typography className={classes.timestamp}>
+                  Posted {formatDateToNow(created_at)}
+                </Typography>
+              </Link>
             </div>
-            <Hidden smDown>
-              <Divider
-                className={classes.divider}
-                orientation="vertical"
-                flexItem
-                light
-              />
-            </Hidden>
           </Grid>
           <Hidden smDown>
             <Grid className={classes.likes} item sm={2}>
-              <FavoriteIcon className={classes.likeicon}></FavoriteIcon>
-              <Typography className={classes.likecount}>23</Typography>
+              {isAlreadyLiked ? (
+                <FavoriteIcon
+                  className={classes.likeicon}
+                  style={{ color: "#F23A3A" }}
+                />
+              ) : (
+                <FavoriteBorderIcon className={classes.likeicon} />
+              )}
+              <Typography className={classes.likecount}>
+                {likesCount === 1 ? "1 like" : `${likesCount} likes`}
+              </Typography>
             </Grid>
           </Hidden>
         </Grid>
