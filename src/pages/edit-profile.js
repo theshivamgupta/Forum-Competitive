@@ -312,11 +312,11 @@ function EditUserInfo({ user }) {
   }
 
   async function handleUpdateProfilePic(event) {
-    console.log({ event });
+    // console.log({ event });
     const { files } = event.target;
     console.log(files[0]);
     const url = await handleImageUpload(files[0]);
-    console.log({ url });
+    // console.log({ url });
     const variables = { id: user.id, profileImage: url };
     await editUserAvatar({ variables });
     setProfileImage(url);
