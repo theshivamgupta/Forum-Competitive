@@ -12,6 +12,7 @@ export const ME = gql`
       last_checked
       codeforces_handle
       codeforces_rating
+      banner
       followers {
         user {
           id
@@ -19,6 +20,7 @@ export const ME = gql`
           profile_image
           name
           username
+          banner
         }
       }
       followings {
@@ -28,6 +30,7 @@ export const ME = gql`
           profile_image
           name
           username
+          banner
         }
       }
       notifications(order_by: { created_at: desc }) {

@@ -8,12 +8,23 @@ import { useFriendsStyles } from "../../styles";
 
 export default function UserStackCard({ friend }) {
   const classes = useFriendsStyles();
-  //   console.log(friend);
+  const bannerImage =
+    friend?.user?.banner === null
+      ? "https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg"
+      : friend?.user?.banner;
+  console.log(friend?.user?.banner);
   return (
     <div>
       <Paper className={classes.usercard} elevation={3}>
         <Grid className={classes.container} container>
-          <Grid className={classes.coverimg} item xs={12}></Grid>
+          <Grid
+            className={classes.coverimg}
+            item
+            xs={12}
+            style={{
+              background: `url(${bannerImage}) no-repeat center center`,
+            }}
+          ></Grid>
           <Grid className={classes.userinfo} item xs={12}>
             <Grid className={classes.container} container>
               <Grid className={classes.profilepic} item xs={12}>

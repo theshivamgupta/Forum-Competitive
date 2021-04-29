@@ -61,6 +61,14 @@ export const EDIT_USER_AVATAR = gql`
   }
 `;
 
+export const EDIT_USER_BANNER = gql`
+  mutation editUserBanner($id: uuid!, $bannerImage: String!) {
+    update_users(where: { id: { _eq: $id } }, _set: { banner: $bannerImage }) {
+      affected_rows
+    }
+  }
+`;
+
 export const CREATE_POST = gql`
   mutation createPost(
     $userId: uuid!

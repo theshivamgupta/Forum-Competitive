@@ -25,12 +25,17 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { AuthContext } from "../auth";
 import { useQuery, useMutation, useApolloClient } from "@apollo/client";
 import { GET_USER_PROFILE } from "../graphql/queries";
-import { FOLLOW_USER, UNFOLLOW_USER } from "../graphql/mutations";
+import {
+  EDIT_USER_BANNER,
+  FOLLOW_USER,
+  UNFOLLOW_USER,
+} from "../graphql/mutations";
 import LoadingScreen from "../components/shared/LoadingScreen";
 import { UserContext } from "../App";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { color } from "../utils/color";
 import FeedPostSkeleton from "../components/feed/FeedPostSkeleton";
+import handleImageUpload from "../utils/handleImageUpload";
 // import UserStackCard from "../components/profile/UserStackCard";
 const StackCard = React.lazy(() => import("../components/shared/StackCard"));
 const UserStackCard = React.lazy(() =>
@@ -39,7 +44,7 @@ const UserStackCard = React.lazy(() =>
 function ProfilePage() {
   const { username } = useParams();
   const { currentUserId, me } = React.useContext(UserContext);
-  console.log(me?.followings);
+  // console.log(me);
   const [activeTab, setActiveTab] = React.useState({
     profile: true,
     followers: false,
@@ -114,10 +119,16 @@ function ProfilePage() {
 
 function ProfileMainCard({ user, isOwner, setActiveTab }) {
   const classes = useProfileMainStyles();
+  const { me } = React.useContext(UserContext);
+  const defaultBanner =
+    "https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg";
   const [value, setValue] = React.useState(0);
   const [showOption, setShowOption] = React.useState(false);
   const [showUnfollowDialog, setUnfollowDialog] = React.useState(false);
-
+  const [bannerImage, setBannerImage] = React.useState(
+    me?.banner === null ? defaultBanner : me?.banner
+  );
+  const coverImgRef = React.useRef(null);
   const { currentUserId, followingIds, followerIds } = React.useContext(
     UserContext
   );
@@ -129,6 +140,7 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
     currentUserId,
   };
   const [followUser] = useMutation(FOLLOW_USER);
+  const [editUserBanner] = useMutation(EDIT_USER_BANNER);
 
   let followButton;
   // const isFollowing = true;
@@ -187,11 +199,37 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
     setShowOption(false);
   }
 
+  async function handleUpdateProfilePic(event) {
+    // console.log({ event });
+    const { files } = event.target;
+    // console.log(files[0]);
+    const url = await handleImageUpload(files[0]);
+    // console.log({ url });
+    const variables = { id: user.id, bannerImage: url };
+    await editUserBanner({ variables });
+    setBannerImage(url);
+  }
+
   return (
     <div>
       <Paper className={classes.covercard}>
         <Grid className={classes.cover} container>
-          <Grid className={classes.coverimg} item xs={12}></Grid>
+          <Grid
+            className={classes.coverimg}
+            item
+            xs={12}
+            onClick={() => coverImgRef.current.click()}
+            style={{
+              background: `url(${bannerImage}) no-repeat center center`,
+            }}
+          ></Grid>
+          <input
+            type="file"
+            ref={coverImgRef}
+            className="hidden"
+            accept="image/*"
+            onChange={handleUpdateProfilePic}
+          />
           <Grid className={classes.profile} item xs={12}>
             <Grid style={{ height: "100%", width: "100%" }} container>
               <Grid className={classes.profilepic} item xs={4} md={3}>
@@ -264,7 +302,7 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
               </Grid>
             </Grid>
           </Grid>
-          <Grid className={classes.navigation} xs={12}>
+          <Grid item className={classes.navigation} xs={12}>
             <Tabs
               value={value}
               onChange={handleChange}

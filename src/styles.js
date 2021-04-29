@@ -1808,8 +1808,8 @@ export const useProfileMainStyles = makeStyles((theme) => ({
   },
   coverimg: {
     height: "55%",
-    background:
-      "url('https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg') no-repeat center center",
+    // background:
+    // "url('https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg') no-repeat center center",
     backgroundSize: "cover",
   },
   profile: {
