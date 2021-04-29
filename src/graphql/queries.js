@@ -62,6 +62,7 @@ export const GET_USER_PROFILE = gql`
       codeforces_handle
       codeforces_rating
       profile_image
+      banner
       posts_aggregate {
         aggregate {
           count

@@ -122,11 +122,12 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
   const { me } = React.useContext(UserContext);
   const defaultBanner =
     "https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg";
+  console.log({ isOwner });
   const [value, setValue] = React.useState(0);
   const [showOption, setShowOption] = React.useState(false);
   const [showUnfollowDialog, setUnfollowDialog] = React.useState(false);
   const [bannerImage, setBannerImage] = React.useState(
-    me?.banner === null ? defaultBanner : me?.banner
+    user?.banner === null ? defaultBanner : user?.banner
   );
   const coverImgRef = React.useRef(null);
   const { currentUserId, followingIds, followerIds } = React.useContext(
@@ -218,18 +219,22 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
             className={classes.coverimg}
             item
             xs={12}
-            onClick={() => coverImgRef.current.click()}
+            onClick={() => {
+              if (isOwner) coverImgRef.current.click();
+            }}
             style={{
               background: `url(${bannerImage}) no-repeat center center`,
             }}
           ></Grid>
-          <input
-            type="file"
-            ref={coverImgRef}
-            className="hidden"
-            accept="image/*"
-            onChange={handleUpdateProfilePic}
-          />
+          {isOwner && (
+            <input
+              type="file"
+              ref={coverImgRef}
+              className="hidden"
+              accept="image/*"
+              onChange={handleUpdateProfilePic}
+            />
+          )}
           <Grid className={classes.profile} item xs={12}>
             <Grid style={{ height: "100%", width: "100%" }} container>
               <Grid className={classes.profilepic} item xs={4} md={3}>
