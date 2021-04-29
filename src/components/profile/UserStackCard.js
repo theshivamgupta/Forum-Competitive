@@ -12,7 +12,7 @@ export default function UserStackCard({ friend }) {
     friend?.user?.banner === null
       ? "https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg"
       : friend?.user?.banner;
-  console.log(friend?.user?.banner);
+  // console.log(friend?.user?.banner);
   return (
     <div>
       <Paper className={classes.usercard} elevation={3}>

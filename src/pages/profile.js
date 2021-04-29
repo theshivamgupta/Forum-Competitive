@@ -58,7 +58,7 @@ function ProfilePage() {
   });
   if (loading) return <LoadingScreen />;
   const [user] = data.users;
-  // console.log(user);
+  // console.log(user?.followers);
   const isOwner = user?.id === currentUserId;
 
   return (
@@ -89,7 +89,7 @@ function ProfilePage() {
                 );
               })}
             {activeTab.followers &&
-              me?.followers.map((follower) => {
+              user?.followers?.map((follower) => {
                 return (
                   <React.Suspense
                     key={follower?.user?.id}
@@ -100,7 +100,7 @@ function ProfilePage() {
                 );
               })}
             {activeTab.followings &&
-              me?.followings.map((following) => {
+              user?.followings?.map((following) => {
                 return (
                   <React.Suspense
                     key={following?.user?.id}
@@ -122,7 +122,7 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
   const { me } = React.useContext(UserContext);
   const defaultBanner =
     "https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg";
-  console.log({ isOwner });
+  // console.log({ isOwner });
   const [value, setValue] = React.useState(0);
   const [showOption, setShowOption] = React.useState(false);
   const [showUnfollowDialog, setUnfollowDialog] = React.useState(false);

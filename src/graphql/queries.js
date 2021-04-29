@@ -63,6 +63,26 @@ export const GET_USER_PROFILE = gql`
       codeforces_rating
       profile_image
       banner
+      followers {
+        user {
+          id
+          user_id
+          profile_image
+          name
+          username
+          banner
+        }
+      }
+      followings {
+        user {
+          id
+          user_id
+          profile_image
+          name
+          username
+          banner
+        }
+      }
       posts_aggregate {
         aggregate {
           count
