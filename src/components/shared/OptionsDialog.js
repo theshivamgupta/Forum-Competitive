@@ -1,7 +1,7 @@
 import React from "react";
 import { useOptionsDialogStyles } from "../../styles";
 import { Dialog, Zoom, Button, Divider } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 // import { defaultPost } from "../../data";
 import { UserContext } from "../../App";
 import { useMutation } from "@apollo/client";

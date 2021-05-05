@@ -3,7 +3,6 @@ import {
   useProfilePageStyles,
   useProfileSideStyles,
   useProfileMainStyles,
-  useStackCardStyles,
 } from "../styles";
 import Layout from "../components/shared/Layout";
 import {
@@ -43,7 +42,7 @@ const UserStackCard = React.lazy(() =>
 );
 function ProfilePage() {
   const { username } = useParams();
-  const { currentUserId, me } = React.useContext(UserContext);
+  const { currentUserId } = React.useContext(UserContext);
   // console.log(me);
   const [activeTab, setActiveTab] = React.useState({
     profile: true,
@@ -52,7 +51,7 @@ function ProfilePage() {
   });
 
   const variables = { username };
-  const { data, loading, error } = useQuery(GET_USER_PROFILE, {
+  const { data, loading } = useQuery(GET_USER_PROFILE, {
     variables,
     fetchPolicy: "no-cache",
   });
@@ -119,7 +118,6 @@ function ProfilePage() {
 
 function ProfileMainCard({ user, isOwner, setActiveTab }) {
   const classes = useProfileMainStyles();
-  const { me } = React.useContext(UserContext);
   const defaultBanner =
     "https://img5.goodfon.com/wallpaper/nbig/7/64/abstract-background-rounded-shapes-colorful-abstraktsiia-tek.jpg";
   // console.log({ isOwner });

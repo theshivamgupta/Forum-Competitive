@@ -44,7 +44,7 @@ function AddPostDialog({ handleClose }) {
   const editor = React.useMemo(() => withReact(createEditor()), []);
   const [value, setValue] = React.useState(initialValue);
   const [title, setTitle] = React.useState("");
-  const [location, setLocation] = React.useState("");
+  const [location] = React.useState("");
   // const [image, setImage] = React.useState(null);
   const [showSnackBar, setSnackBar] = React.useState(false);
   // const [input, setInput] = React.useState(initialValue);

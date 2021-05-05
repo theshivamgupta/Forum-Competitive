@@ -40,7 +40,6 @@ function EditProfilePage({ history }) {
   const variables = { id: currentUserId };
   const { data, loading } = useQuery(GET_EDIT_USER_PROFILE, { variables });
   const classes = useEditProfilePageStyles();
-  const path = history.location.pathname;
   const [showDrawer, setDrawer] = React.useState(false);
   const [item, setItem] = React.useState({
     edit: true,
@@ -207,9 +206,10 @@ function ChangeHandle({ user }) {
     }
   }
 
-  function handleError(error) {
-    if (error.code.includes("auth")) {
-      setError({ type: "email", message: error.message });
+  function handleError(err) {
+    if (err.code.includes("auth")) {
+      setError({ type: "email", message: err.message });
+      console.log(error);
     }
   }
 
@@ -479,12 +479,6 @@ function ChangePassword({ user }) {
     } catch (error) {
       console.error("Error updating profile", error);
       // handleError(error);
-    }
-  }
-
-  function handleError(error) {
-    if (error.code.includes("auth")) {
-      setError({ type: "email", message: error.message });
     }
   }
 

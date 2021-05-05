@@ -1,7 +1,6 @@
 import React from "react";
-import { useFeedPageStyles } from "../styles";
+
 import Layout from "../components/shared/Layout";
-import UserCard from "../components/shared/UserCard";
 // import FeedPost from "../components/feed/FeedPost";
 // import { getDefaultPost } from "../data";
 import LoadingScreen from "../components/shared/LoadingScreen";
@@ -15,8 +14,7 @@ import usePageBottom from "../utils/usePageBottom";
 const FeedPost = React.lazy(() => import("../components/feed/FeedPost"));
 
 function FeedPage() {
-  const classes = useFeedPageStyles();
-  const { me, feedIds } = React.useContext(UserContext);
+  const { feedIds } = React.useContext(UserContext);
   const [isEndOfFeed, setEndOfFeed] = React.useState(false);
   // const variables = { feedIds, limit: 2 };
   const variables = {};
@@ -34,14 +32,14 @@ function FeedPage() {
   }, []);
 
   React.useEffect(() => {
-    if (!isPageBottom || !data) return;
+    if (!isPageBottom || !data || isEndOfFeed) return;
     // const variables = { limit: 2, feedIds, lastTimestamp };
     const variables = {};
     fetchMore({
       variables,
       updateQuery: handleUpdateQuery,
     });
-  }, [isPageBottom, data, fetchMore, handleUpdateQuery, feedIds]);
+  }, [isPageBottom, data, fetchMore, handleUpdateQuery, feedIds, isEndOfFeed]);
 
   // let loading = false;
   if (loading) return <LoadingScreen />;
@@ -57,15 +55,6 @@ function FeedPage() {
             </React.Suspense>
           ))}
         </div>
-        {/* Sidebar */}
-        {/* <Hidden smDown>
-          <div className={classes.sidebarContainer}>
-            <div className={classes.sidebarWrapper}>
-              <UserCard user={me} avatarSize={50} />
-              <FeedSideSuggestions />
-            </div>
-          </div>
-        </Hidden> */}
       </div>
     </Layout>
   );

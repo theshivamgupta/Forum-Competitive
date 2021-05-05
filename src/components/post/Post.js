@@ -1,6 +1,6 @@
 import React from "react";
 import { usePostStyles } from "../../styles";
-import { MoreIcon, RemoveIcon, SaveIcon } from "../../icons";
+import { MoreIcon } from "../../icons";
 import { Link, useHistory } from "react-router-dom";
 import {
   Typography,
@@ -19,11 +19,9 @@ import { UserContext } from "../../App";
 import {
   LIKE_POST,
   UNLIKE_POST,
-  SAVE_POST,
-  UNSAVE_POST,
   CREATE_COMMENT,
 } from "../../graphql/mutations";
-import { formatDateToNowShort, formatPostDate } from "../../utils/formatDate";
+import { formatPostDate } from "../../utils/formatDate";
 import { Scrollbar } from "react-scrollbars-custom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
@@ -164,45 +162,6 @@ function Post({ postId }) {
   );
 }
 
-function AuthorCaption({ user, caption, createdAt }) {
-  const classes = usePostStyles();
-
-  return (
-    <div style={{ display: "flex" }}>
-      <Avatar
-        src={user.profile_image}
-        alt="User avatar"
-        style={{ marginRight: 14, width: 32, height: 32 }}
-      />
-      <div style={{ display: "flex", flexDirection: "column " }}>
-        <Link to={user.username}>
-          <Typography
-            variant="subtitle2"
-            component="span"
-            className={classes.username}
-          >
-            {user.username}
-          </Typography>
-          <Typography
-            variant="body2"
-            component="span"
-            className={classes.postCaption}
-            style={{ paddingLeft: 0 }}
-            dangerouslySetInnerHTML={{ __html: caption }}
-          />
-        </Link>
-        <Typography
-          style={{ marginTop: 16, marginBottom: 4, display: "inline-block" }}
-          color="textSecondary"
-          variant="caption"
-        >
-          {formatDateToNowShort(createdAt)}
-        </Typography>
-      </div>
-    </div>
-  );
-}
-
 function UserComment({ comment }) {
   const renderers = {
     image: ({ alt, src, title }) => (
@@ -269,37 +228,6 @@ function LikeButton({ likes, authorId, postId }) {
   }
 
   return <Icon className={className} onClick={onClick} />;
-}
-
-function SaveButton({ savedPosts, postId }) {
-  const classes = usePostStyles();
-  const { currentUserId } = React.useContext(UserContext);
-  const isAlreadySaved = savedPosts.some(
-    ({ user_id }) => user_id === currentUserId
-  );
-  const [saved, setSaved] = React.useState(isAlreadySaved);
-  const Icon = saved ? RemoveIcon : SaveIcon;
-  const onClick = saved ? handleRemove : handleSave;
-  const [savePost] = useMutation(SAVE_POST);
-  const [unsavePost] = useMutation(UNSAVE_POST);
-  const variables = {
-    postId,
-    userId: currentUserId,
-  };
-
-  function handleSave() {
-    // console.log("save");
-    setSaved(true);
-    savePost({ variables });
-  }
-
-  function handleRemove() {
-    // console.log("remove");
-    setSaved(false);
-    unsavePost({ variables });
-  }
-
-  return <Icon className={classes.saveIcon} onClick={onClick} />;
 }
 
 function Comment({ postId, comments, isMobile, isTablet }) {

@@ -24,8 +24,6 @@ import { Link, useHistory } from "react-router-dom";
 import logo from "../../images/logo.png";
 import {
   LoadingIcon,
-  LikeIcon,
-  LikeActiveIcon,
   ExploreIcon,
   ExploreActiveIcon,
   HomeIcon,

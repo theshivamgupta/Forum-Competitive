@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "name": "instagram",
-  "alias": "instagram-react12",
+  "name": "codeblog",
+  "alias": "codeblog-forum",
   "builds": [
     {
       "src": "package.json",

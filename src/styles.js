@@ -2078,3 +2078,100 @@ export const useFriendsStyles = makeStyles((theme) => ({
     height: "20%",
   },
 }));
+
+export const useFeedPostsStyles = makeStyles((theme) => ({
+  stackitem: {
+    // width: "900px",
+    height: "100px",
+    margin: "auto",
+    marginTop: "20px",
+    transition: "0.4s",
+    [theme.breakpoints.up("md")]: {
+      // width: "65%",
+      height: "120px",
+    },
+    "&:hover": {
+      backgroundColor: "#f5f5f5",
+    },
+  },
+  maingrid: {
+    height: "100%",
+  },
+  divider: {
+    height: "80px",
+    alignSelf: "center",
+  },
+  usericon: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    flexWrap: "wrap",
+    transition: "0.15s",
+    cursor: "pointer",
+    "&:hover": {
+      color: "#F23A3A",
+    },
+  },
+  avatar: {
+    height: "43px",
+    width: "43px",
+    [theme.breakpoints.up("md")]: {
+      height: "50px",
+      width: "50px",
+    },
+  },
+  user: {
+    fontFamily: "Verdana",
+    marginTop: "3%",
+    fontWeight: "700",
+  },
+  post: {
+    display: "flex",
+    justifyContent: "space-between",
+    transition: "0.15s",
+    "&:hover": {
+      color: "#F23A3A",
+    },
+  },
+  mainpost: {
+    display: "flex",
+    width: "90%",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  content: {
+    fontFamily: "Trebuchet MS",
+    fontWeight: "700",
+    fontSize: "115%",
+    cursor: "pointer",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "130%",
+    },
+  },
+  timestamp: {
+    fontFamily: "Lucida Console",
+    fontSize: "80%",
+    color: "#7e7e7e",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "90%",
+    },
+  },
+  likes: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  likeicon: {
+    // color: "#F23A3A",
+    height: "30px",
+    width: "30px",
+  },
+  likecount: {
+    fontWeight: "700",
+    fontFamily: "Lucida Console",
+    fontSize: "85%",
+  },
+}));
