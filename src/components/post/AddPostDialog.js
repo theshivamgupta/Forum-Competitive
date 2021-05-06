@@ -19,8 +19,6 @@ import {
   Slide,
   TextField,
 } from "@material-ui/core";
-import snarkdown from "snarkdown";
-import DOMPurify from "dompurify";
 import { ArrowBackIos } from "@material-ui/icons";
 import { UserContext } from "../../App";
 import handleImageUpload from "../../utils/handleImageUpload";
@@ -63,9 +61,6 @@ function AddPostDialog({ handleClose }) {
     setSubmitting(true);
     // const url = await handleImageUpload(media);
     const md = serialiseMd(value);
-    let html = snarkdown(md);
-    html = DOMPurify.sanitize(html);
-    console.log(html);
     const variables = {
       userId: currentUserId,
       location,
