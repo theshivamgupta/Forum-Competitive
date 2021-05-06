@@ -1,5 +1,5 @@
 {
-  "name": "instagram-react12",
+  "name": "codeblog",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,6 +19,8 @@
     "dotenv": "^8.2.0",
     "escape-html": "^1.0.3",
     "firebase": "^7.24.0",
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0",
     "graphql": "^14.7.0",
     "node-url-shortener": "^1.1.11",
     "react": "^16.14.0",
@@ -39,6 +41,7 @@
     "slate": "^0.58.4",
     "slate-history": "^0.58.4",
     "slate-react": "^0.58.4",
+    "subscriptions-transport-ws": "^0.9.18",
     "validator": "^13.5.2"
   },
   "scripts": {
