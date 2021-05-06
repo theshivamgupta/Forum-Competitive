@@ -1,7 +1,7 @@
 import React from "react";
 import {
   useProfilePageStyles,
-  useProfileSideStyles,
+  // useProfileSideStyles,
   useProfileMainStyles,
 } from "../styles";
 import Layout from "../components/shared/Layout";
@@ -35,6 +35,7 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { color } from "../utils/color";
 import FeedPostSkeleton from "../components/feed/FeedPostSkeleton";
 import handleImageUpload from "../utils/handleImageUpload";
+import "../assets/profile.css";
 // import UserStackCard from "../components/profile/UserStackCard";
 const StackCard = React.lazy(() => import("../components/shared/StackCard"));
 const UserStackCard = React.lazy(() =>
@@ -366,25 +367,25 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
 }
 
 function ProfileSideCard({ user }) {
-  const classes = useProfileSideStyles();
+  // const classes = useProfileSideStyles();
 
   return (
     <div>
-      <Paper className={classes.sidecard} elevation={3}>
-        <Grid className={classes.frienddata} container spacing={1}>
-          <Grid className={classes.data} item xs={3}>
-            <Typography className={classes.friends}>Followers</Typography>
+      <Paper className="sidecard" elevation={3}>
+        <Grid className="frienddata" container spacing={1}>
+          <Grid className="data" item xs={3}>
+            <Typography className="friends">Followers</Typography>
           </Grid>
-          <Grid className={classes.data} item xs={3}>
-            <Typography className={classes.number}>
+          <Grid className="data" item xs={3}>
+            <Typography className="number">
               {user[`followers_aggregate`]?.aggregate?.count}
             </Typography>
           </Grid>
-          <Grid className={classes.data} item xs={3}>
-            <Typography className={classes.friends}>Following</Typography>
+          <Grid className="data" item xs={3}>
+            <Typography className="friends">Following</Typography>
           </Grid>
-          <Grid className={classes.data} item xs={3}>
-            <Typography className={classes.number}>
+          <Grid className="data" item xs={3}>
+            <Typography className="number">
               {user[`followings_aggregate`]?.aggregate?.count}
             </Typography>
           </Grid>

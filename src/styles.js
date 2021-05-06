@@ -1784,12 +1784,12 @@ export const useProfileSideStyles = makeStyles((theme) => ({
   },
   friends: {
     display: "inline-block",
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "700",
   },
   number: {
     display: "inline-block",
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "700",
     fontSize: "120%",
     color: "#4267B2",
@@ -1845,7 +1845,7 @@ export const useProfileMainStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
   },
   name: {
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "700",
     width: "100%",
     fontSize: "200%",
@@ -1856,7 +1856,7 @@ export const useProfileMainStyles = makeStyles((theme) => ({
   },
   username: {
     display: "inline-block",
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "700",
     fontSize: "120%",
     color: "#4267B2",
@@ -1866,7 +1866,7 @@ export const useProfileMainStyles = makeStyles((theme) => ({
   },
   codeforces: {
     display: "inline-block",
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "400",
     fontSize: "120%",
     color: "#8d8d8d",
@@ -1875,7 +1875,7 @@ export const useProfileMainStyles = makeStyles((theme) => ({
     },
   },
   bio: {
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "400",
     fontSize: "120%",
     color: "#747474",
@@ -1909,7 +1909,7 @@ export const useProfileMainStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   navtab: {
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     [theme.breakpoints.down("md")]: {
       fontSize: "100%",
     },
@@ -1978,7 +1978,7 @@ export const useStackCardStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   content: {
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "700",
     fontSize: "115%",
     cursor: "pointer",
@@ -2058,13 +2058,13 @@ export const useFriendsStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   name: {
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "700",
     fontSize: "110%",
     color: "#4267B2",
   },
   username: {
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "700",
     fontSize: "100%",
     cursor: "pointer",
@@ -2142,7 +2142,7 @@ export const useFeedPostsStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   content: {
-    fontFamily: "Trebuchet MS",
+    // fontFamily: "Trebuchet MS",
     fontWeight: "700",
     fontSize: "115%",
     cursor: "pointer",

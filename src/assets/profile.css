@@ -1,0 +1,24 @@
+.sidecard {
+  width: 90%;
+  padding: 5%;
+}
+
+.frienddata {
+  width: 100%;
+}
+
+.data {
+  display: flex;
+  align-items: center;
+}
+
+.friends {
+  display: inline-block;
+}
+
+.number {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 120%;
+  color: #4267b2;
+}
