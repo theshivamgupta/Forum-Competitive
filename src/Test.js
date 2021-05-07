@@ -36,7 +36,7 @@ function Test() {
         <div></div>
         <button onClick={handleClick}>Click</button>
         <div className="mt-8 mx-auto" style={{ width: "900px" }}>
-          <div class="prose lg:prose-lg xl:prose-xl mt-10 mb-10 mx-auto">
+          <div className="prose lg:prose-lg xl:prose-xl mt-10 mb-10 mx-auto">
             <h1>Everything You Need to Know to Succeed as a Freelancer</h1>
           </div>
           <ReactMarkdown

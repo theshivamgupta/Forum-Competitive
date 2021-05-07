@@ -232,6 +232,7 @@ export const GET_FEED_ALL = gql`
       created_at
       media
       location
+      type
       user {
         id
         username

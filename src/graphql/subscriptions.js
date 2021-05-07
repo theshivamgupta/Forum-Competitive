@@ -59,6 +59,7 @@ export const GET_POST = gql`
       created_at
       media
       location
+      type
       user {
         id
         username

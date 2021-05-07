@@ -32,6 +32,7 @@ import CommentOutlinedIcon from "@material-ui/icons/CommentOutlined";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import { useMediaQuery } from "react-responsive";
 import "./Post.css";
+import BlogPost from "../feed/BlogPost";
 
 function Post({ postId }) {
   const isMobile = useMediaQuery({
@@ -44,8 +45,8 @@ function Post({ postId }) {
   const history = useHistory();
   const { currentUserId } = React.useContext(UserContext);
   // console.log(data);
-  // setTimeout(() => setLoading(false), 2000);
   if (loading) return <PostSkeleton />;
+  // setTimeout(() => setLoading(false), 2000);
   const {
     id,
     media,
@@ -55,6 +56,7 @@ function Post({ postId }) {
     caption,
     comments,
     created_at,
+    type,
   } = data.posts_by_pk;
   const likesCount = likes_aggregate.aggregate.count;
   const commentCount = comments.length;
@@ -76,80 +78,86 @@ function Post({ postId }) {
   }
 
   return (
-    <div
-      className="app-container"
-      style={{ width: isMobile ? "80vw" : "70vw", marginLeft: "-30px" }}
-    >
-      <Paper
-        className="contain"
-        square
-        elevation={3}
-        style={{ width: "100%", height: "1000px" }}
-      >
-        <Scrollbar style={{ width: "100%", height: "100%" }}>
-          <div className="card-container">
-            <div className="back-container flex w-14">
-              <Link to={`/`}>
-                <ArrowBackIosIcon
-                  style={{ marginTop: "1px", fontSize: "small" }}
+    <>
+      {type !== "blog" ? (
+        <div
+          className="app-container"
+          style={{ width: isMobile ? "80vw" : "70vw", marginLeft: "-30px" }}
+        >
+          <Paper
+            className="contain"
+            square
+            elevation={3}
+            style={{ width: "100%", height: "1000px" }}
+          >
+            <Scrollbar style={{ width: "100%", height: "100%" }}>
+              <div className="card-container">
+                <div className="back-container flex w-14">
+                  <Link to={`/`}>
+                    <ArrowBackIosIcon
+                      style={{ marginTop: "1px", fontSize: "small" }}
+                    />
+                    <span>Back</span>
+                  </Link>
+                </div>
+                <div className="title-container">{media}</div>
+                <div className="like-container flex">
+                  {/* <ThumbUpAltOutlinedIcon style={{ marginRight: "10px" }} /> */}
+                  <LikeButton likes={likes} postId={id} authorId={user.id} />
+                  {/* <div></div> */}
+                  <span>{`${likesCount} ${isMobile ? "" : "likes"}`}</span>
+                </div>
+              </div>
+              <div className="content-container">
+                <div className="user-detail-container">
+                  <div className="image w-12">
+                    <Link to={`/${user.username}`}>
+                      <Avatar
+                        src={user.profile_image}
+                        alt="avatar"
+                        variant="circular"
+                      />
+                    </Link>
+                  </div>
+                  <div className="post-detail">
+                    <p>{user?.username}</p>
+                    <p
+                      style={{ fontSize: isMobile ? "0.8rem" : "1rem" }}
+                    >{`Created At: ${formatPostDate(created_at)}`}</p>
+                    <MoreIcon onClick={handleDialog} />
+                  </div>
+                </div>
+              </div>
+              <div className="post-container">
+                <ReactMarkdown
+                  source={caption}
+                  escapeHtml={false}
+                  className="prose"
+                  renderers={renderers}
                 />
-                <span>Back</span>
-              </Link>
-            </div>
-            <div className="title-container">{media}</div>
-            <div className="like-container flex">
-              {/* <ThumbUpAltOutlinedIcon style={{ marginRight: "10px" }} /> */}
-              <LikeButton likes={likes} postId={id} authorId={user.id} />
-              {/* <div></div> */}
-              <span>{`${likesCount} ${isMobile ? "" : "likes"}`}</span>
-            </div>
-          </div>
-          <div className="content-container">
-            <div className="user-detail-container">
-              <div className="image w-12">
-                <Link to={`/${user.username}`}>
-                  <Avatar
-                    src={user.profile_image}
-                    alt="avatar"
-                    variant="circular"
-                  />
-                </Link>
               </div>
-              <div className="post-detail">
-                <p>{user?.username}</p>
-                <p
-                  style={{ fontSize: isMobile ? "0.8rem" : "1rem" }}
-                >{`Created At: ${formatPostDate(created_at)}`}</p>
-                <MoreIcon onClick={handleDialog} />
-              </div>
+            </Scrollbar>
+          </Paper>
+          <Paper className="post-comment-container">
+            <div className="comment-container" style={{ width: "100%" }}>
+              <CommentOutlinedIcon fontSize="small" className="comment-icon" />
+              <Typography variant="caption" className="comment-typography">
+                {`Comments: ${commentCount}`}
+              </Typography>
             </div>
-          </div>
-          <div className="post-container">
-            <ReactMarkdown
-              source={caption}
-              escapeHtml={false}
-              className="prose"
-              renderers={renderers}
+          </Paper>
+          <Paper className="textarea-container" style={{ margin: "auto" }}>
+            <Comment
+              postId={id}
+              comments={comments}
+              isMobile={isMobile}
+              isTablet={isTablet}
             />
-          </div>
-        </Scrollbar>
-      </Paper>
-      <Paper className="post-comment-container">
-        <div className="comment-container" style={{ width: "100%" }}>
-          <CommentOutlinedIcon fontSize="small" className="comment-icon" />
-          <Typography variant="caption" className="comment-typography">
-            {`Comments: ${commentCount}`}
-          </Typography>
+          </Paper>
         </div>
-      </Paper>
-      <Paper className="textarea-container" style={{ margin: "auto" }}>
-        <Comment
-          postId={id}
-          comments={comments}
-          isMobile={isMobile}
-          isTablet={isTablet}
-        />
-      </Paper>
+      ) : (
+        <BlogPost postData={data.posts_by_pk} />
+      )}
       {openDialog && (
         <OptionsDialog
           postId={id}
@@ -158,7 +166,7 @@ function Post({ postId }) {
           onEdit={handleEditPost}
         />
       )}
-    </div>
+    </>
   );
 }
 
@@ -200,6 +208,7 @@ function UserComment({ comment }) {
 }
 
 function LikeButton({ likes, authorId, postId }) {
+  console.log({ authorId });
   const classes = usePostStyles();
   const { currentUserId } = React.useContext(UserContext);
   const isAlreadyLiked = likes.some(({ user_id }) => user_id === currentUserId);

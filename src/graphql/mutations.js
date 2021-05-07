@@ -75,6 +75,7 @@ export const CREATE_POST = gql`
     $media: String!
     $location: String!
     $caption: String!
+    $type: String!
   ) {
     insert_posts(
       objects: {
@@ -82,6 +83,7 @@ export const CREATE_POST = gql`
         media: $media
         location: $location
         caption: $caption
+        type: $type
       }
     ) {
       affected_rows

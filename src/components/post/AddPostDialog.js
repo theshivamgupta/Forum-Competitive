@@ -70,6 +70,7 @@ function AddPostDialog({ handleClose }) {
       location,
       caption: md,
       media: title,
+      type: postType,
     };
     await createPost({ variables });
     setSubmitting(false);
