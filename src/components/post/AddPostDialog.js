@@ -18,6 +18,8 @@ import {
   Snackbar,
   Slide,
   TextField,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
 import { ArrowBackIos } from "@material-ui/icons";
 import { UserContext } from "../../App";
@@ -43,11 +45,13 @@ function AddPostDialog({ handleClose }) {
   const [value, setValue] = React.useState(initialValue);
   const [title, setTitle] = React.useState("");
   const [location] = React.useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
   // const [image, setImage] = React.useState(null);
   const [showSnackBar, setSnackBar] = React.useState(false);
   // const [input, setInput] = React.useState(initialValue);
   const [submitting, setSubmitting] = React.useState(false);
   const [createPost] = useMutation(CREATE_POST);
+  const [postType, setPostType] = React.useState("");
   const addImgRef = React.useRef(null);
 
   const renderers = {
@@ -98,6 +102,15 @@ function AddPostDialog({ handleClose }) {
     setTitle(e.target.value);
   }
 
+  function handleCloseMenu(event) {
+    // console.log(event);
+    setAnchorEl(null);
+  }
+
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
   return (
     <Dialog fullScreen open onClose={handleClose}>
       <AppBar className={classes.appBar}>
@@ -106,6 +119,45 @@ function AddPostDialog({ handleClose }) {
           <Typography align="center" variant="body1" className={classes.title}>
             New Doubt...
           </Typography>
+          <Button
+            aria-haspopup="true"
+            onClick={handleClick}
+            className={classes.share}
+          >
+            Type
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleCloseMenu}
+          >
+            <MenuItem
+              onClick={() => {
+                setPostType("interview");
+                setAnchorEl(null);
+              }}
+            >
+              Interview Prep
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setPostType("compi");
+                setAnchorEl(null);
+              }}
+            >
+              Competitive Prog.
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setPostType("blog");
+                setAnchorEl(null);
+              }}
+            >
+              Blog
+            </MenuItem>
+          </Menu>
           <Button
             color="primary"
             className={classes.share}
@@ -177,10 +229,7 @@ function AddPostDialog({ handleClose }) {
           />
         </Slate>
       </Paper>
-      <div
-        className="nothing"
-        style={{ height: "400px", padding: "20px", marginBottom: "16px" }}
-      >
+      <div style={{ height: "400px", padding: "20px", marginBottom: "16px" }}>
         <ReactMarkdown
           source={serialiseMd(value)}
           escapeHtml={false}

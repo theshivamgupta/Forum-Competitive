@@ -1,70 +1,65 @@
-import React from "react";
-import { fetchUserData } from "./utils/api/CodeForces";
-import { Line } from "react-chartjs-2";
-
-const LineChart = ({ res }) => {
-  const [points, setPoints] = React.useState([]);
-
-  const pushPoint = React.useCallback(() => {
-    if (res) setPoints([]);
-    if (res) setPoints(res);
-  }, [res, setPoints]);
-
-  React.useEffect(() => {
-    pushPoint();
-  }, [pushPoint]);
-
-  React.useEffect(() => {
-    console.log("rerender");
-  }, [points]);
-
-  return (
-    <>
-      {/* <button onClick={() => console.log(points)}>See</button> */}
-      <Line
-        data={{
-          labels: points.map((user) => `${user?.contestName}`),
-          datasets: [
-            {
-              data: points.map(({ rating }) => rating),
-              label: "Rating",
-              borderColor: "#3333ff",
-              fill: true,
-            },
-          ],
-        }}
-      />
-    </>
-  );
-};
+import React, { useState } from "react";
+import "./assets/test.css";
+import ReactMarkdown from "react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import ReactHtmlParser from "react-html-parser";
+import gfm from "remark-gfm";
+import Layout from "./components/shared/Layout";
 
 function Test() {
-  const [value, setValue] = React.useState("");
-  const [data, setData] = React.useState("");
-  const [res, setRes] = React.useState();
+  const [text, setText] = useState("");
 
-  async function handleFetch(e) {
+  function handleClick(e) {
     e.preventDefault();
-    const response = await fetchUserData(value);
-    console.log("coming here again");
-    setData(JSON.stringify(response, null, 2));
-    setRes(response);
+    // html = DOMPurify.sanitize(html);
+    let html = ReactHtmlParser(text);
+    console.log(html);
+    setText(html);
   }
 
-  React.useEffect(() => {
-    console.log("parent rerender");
-  }, [res]);
-
-  //`${user?.rating} (${user.changedRating})\n ${user?.rank}\n ${user?.contestName}`
+  const renderers = {
+    image: ({ alt, src, title }) => (
+      <img alt={alt} src={src} title={title} style={{ maxWidth: 400 }} />
+    ),
+    code: Highlight,
+  };
 
   return (
-    <>
-      <input type="text" onChange={(e) => setValue(e.target.value)} />
-      <button onClick={handleFetch}>Submit</button>
-      <button onClick={() => console.log(res)}>Click</button>
-      <p>{data}</p>
-      {res && <LineChart res={res} />}
-    </>
+    <Layout>
+      <div className="p-3">
+        <textarea
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
+        />
+        <div></div>
+        <button onClick={handleClick}>Click</button>
+        <div className="mt-8 mx-auto" style={{ width: "900px" }}>
+          <div class="prose lg:prose-lg xl:prose-xl mt-10 mb-10 mx-auto">
+            <h1>Everything You Need to Know to Succeed as a Freelancer</h1>
+          </div>
+          <ReactMarkdown
+            source={text}
+            escapeHtml={false}
+            className="prose mx-auto md:prose-lg lg:prose-xl"
+            style={{ width: "150%" }}
+            renderers={renderers}
+            plugins={[gfm]}
+            onChange={(e) => console.log("yup")}
+            children={text}
+          />
+        </div>
+      </div>
+    </Layout>
+  );
+}
+
+function Highlight({ value, langauge }) {
+  return (
+    <SyntaxHighlighter language={langauge ?? null} style={docco}>
+      {value ?? ""}
+    </SyntaxHighlighter>
   );
 }
 
