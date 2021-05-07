@@ -1,6 +1,7 @@
 import React from "react";
 import { usePostSkeletonStyles } from "../../styles";
 import { useMediaQuery } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 
 export function PostSkeleton() {
   const classes = usePostSkeletonStyles();
@@ -10,18 +11,13 @@ export function PostSkeleton() {
     <div
       className={classes.container}
       style={{
-        gridTemplateColumns: matches && "600px 335px"
+        gridTemplateColumns: matches && "600px 335px",
       }}
     >
-      <div className={classes.mediaSkeleton} />
-      <div>
-        <div className={classes.headerSkeleton}>
-          <div className={classes.avatarSkeleton} />
-          <div className={classes.headerTextSkeleton}>
-            <div className={classes.primaryTextSkeleton} />
-            <div className={classes.secondaryTextSkeleton} />
-          </div>
-        </div>
+      <div className="mx-auto">
+        <Skeleton variant="rect" width={"70vw"} />
+        <Skeleton variant="circle" width={40} height={40} />
+        <Skeleton variant="rect" width={"70vw"} height={"1000px"} />
       </div>
     </div>
   );

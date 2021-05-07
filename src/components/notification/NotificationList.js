@@ -65,11 +65,11 @@ function NotificationList({ handleHideList, notifications, currentUserId }) {
                   className={classes.typography}
                 >
                   {isLike &&
-                    `likes your photo. ${formatDateToNowShort(
+                    `Liked your Post. ${formatDateToNowShort(
                       notification.created_at
                     )}`}
                   {isFollow &&
-                    `started following you. ${formatDateToNowShort(
+                    `Started following you. ${formatDateToNowShort(
                       notification.created_at
                     )}`}
                 </Typography>

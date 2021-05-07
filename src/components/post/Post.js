@@ -208,7 +208,6 @@ function UserComment({ comment }) {
 }
 
 function LikeButton({ likes, authorId, postId }) {
-  console.log({ authorId });
   const classes = usePostStyles();
   const { currentUserId } = React.useContext(UserContext);
   const isAlreadyLiked = likes.some(({ user_id }) => user_id === currentUserId);
