@@ -6,26 +6,71 @@ import {
   useLocation,
   Redirect,
 } from "react-router-dom";
-import FeedPage from "./pages/feed";
-import ExplorePage from "./pages/explore";
-import ProfilePage from "./pages/profile";
-import PostPage from "./pages/post";
-import EditProfilePage from "./pages/edit-profile";
-import LoginPage from "./pages/login";
-import SignUpPage from "./pages/signup";
-import NotFoundPage from "./pages/not-found";
+import LoadingScreen from "./components/shared/LoadingScreen";
 import PostModal from "./components/post/PostModal";
 import { AuthContext } from "./auth";
 import { useSubscription } from "@apollo/client";
 import { ME } from "./graphql/subscriptions";
-import LoadingScreen from "./components/shared/LoadingScreen";
-import FirstLogin from "./pages/firstLogin";
 import PrivateRoute from "./auth/PrivateRoute";
 import GuestRoute from "./auth/GuestRoute";
-import Test from "./Test";
-import UpdatePost from "./pages/UpdatePost";
+import Loadable from "react-loadable";
 
 export const UserContext = React.createContext();
+
+const AsyncLoginPage = Loadable({
+  loader: () => import("./pages/login"),
+  loading: LoadingScreen,
+});
+
+const AsyncSignupPage = Loadable({
+  loader: () => import("./pages/signup"),
+  loading: LoadingScreen,
+});
+
+const AsyncNotFoundPage = Loadable({
+  loader: () => import("./pages/not-found"),
+  loading: LoadingScreen,
+});
+
+const AsyncFirstLogin = Loadable({
+  loader: () => import("./pages/firstLogin"),
+  loading: LoadingScreen,
+});
+
+const AsyncTest = Loadable({
+  loader: () => import("./Test"),
+  loading: LoadingScreen,
+});
+
+const AsyncUpdatePost = Loadable({
+  loader: () => import("./pages/UpdatePost"),
+  loading: LoadingScreen,
+});
+
+const AsyncFeedPage = Loadable({
+  loader: () => import("./pages/feed"),
+  loading: LoadingScreen,
+});
+
+const AsyncExplorePage = Loadable({
+  loader: () => import("./pages/explore"),
+  loading: LoadingScreen,
+});
+
+const AsyncProfilePage = Loadable({
+  loader: () => import("./pages/profile"),
+  loading: LoadingScreen,
+});
+
+const AsyncPostPage = Loadable({
+  loader: () => import("./pages/post"),
+  loading: LoadingScreen,
+});
+
+const AsyncEditProfilePage = Loadable({
+  loader: () => import("./pages/edit-profile"),
+  loading: LoadingScreen,
+});
 
 function App() {
   const { authState } = React.useContext(AuthContext);
@@ -49,8 +94,8 @@ function App() {
   if (!isAuth) {
     return (
       <Switch>
-        <Route path="/accounts/login" component={LoginPage} />
-        <Route path="/accounts/emailsignup" component={SignUpPage} />
+        <Route path="/accounts/login" component={AsyncLoginPage} />
+        <Route path="/accounts/emailsignup" component={AsyncSignupPage} />
         <Redirect to="/accounts/login" />
       </Switch>
     );
@@ -68,21 +113,29 @@ function App() {
       value={{ me, currentUserId, followingIds, followerIds, feedIds }}
     >
       <Switch location={isModalOpen ? prevLocation.current : location}>
-        <GuestRoute exact path="/accounts/login" component={LoginPage} />
-        <GuestRoute exact path="/accounts/emailsignup" component={SignUpPage} />
-        <PrivateRoute exact path="/t/test" component={Test} />
-        <PrivateRoute exact path="/" component={FeedPage} />
-        <PrivateRoute exact path="/explore" component={ExplorePage} />
+        <GuestRoute exact path="/accounts/login" component={AsyncLoginPage} />
+        <GuestRoute
+          exact
+          path="/accounts/emailsignup"
+          component={AsyncSignupPage}
+        />
+        <PrivateRoute exact path="/t/test" component={AsyncTest} />
+        <PrivateRoute exact path="/" component={AsyncFeedPage} />
+        <PrivateRoute exact path="/explore" component={AsyncExplorePage} />
         <PrivateRoute
           exact
           path="/:username/firstLogin"
-          component={FirstLogin}
+          component={AsyncFirstLogin}
         />
-        <PrivateRoute exact path="/up/:postId/:userId" component={UpdatePost} />
-        <PrivateRoute exact path="/p/:postId" component={PostPage} />
-        <PrivateRoute path="/accounts/edit" component={EditProfilePage} />
-        <PrivateRoute exact path="/:username" component={ProfilePage} />
-        <GuestRoute path="*" component={NotFoundPage} />
+        <PrivateRoute
+          exact
+          path="/up/:postId/:userId"
+          component={AsyncUpdatePost}
+        />
+        <PrivateRoute exact path="/p/:postId" component={AsyncPostPage} />
+        <PrivateRoute path="/accounts/edit" component={AsyncEditProfilePage} />
+        <PrivateRoute exact path="/:username" component={AsyncProfilePage} />
+        <GuestRoute path="*" component={AsyncNotFoundPage} />
       </Switch>
       {isModalOpen && <Route exact path="/p/:postId" component={PostModal} />}
     </UserContext.Provider>

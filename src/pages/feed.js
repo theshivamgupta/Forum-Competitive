@@ -2,52 +2,72 @@ import React from "react";
 
 import Layout from "../components/shared/Layout";
 // import FeedPost from "../components/feed/FeedPost";
-// import { getDefaultPost } from "../data";
 import LoadingScreen from "../components/shared/LoadingScreen";
 // import { LoadingLargeIcon } from "../icons";
 import FeedPostSkeleton from "../components/feed/FeedPostSkeleton";
-import { UserContext } from "../App";
-import { useQuery } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import { GET_FEED_ALL } from "../graphql/queries";
-import usePageBottom from "../utils/usePageBottom";
+// import usePageBottom from "../utils/usePageBottom";
 import "../assets/test.css";
 // import { LoadingLargeIcon } from "../icons";
 const FeedPost = React.lazy(() => import("../components/feed/FeedPost"));
 
 function FeedPage() {
-  const { feedIds } = React.useContext(UserContext);
-  const [isEndOfFeed, setEndOfFeed] = React.useState(false);
   const [active, setActiveTab] = React.useState({
     interview: true,
     cp: false,
     blog: false,
   });
-  // const variables = { feedIds, limit: 2 };
-  const variables = {};
-  const { data, loading, fetchMore } = useQuery(GET_FEED_ALL, { variables });
+  const variables = { type: "interview" };
+  const { loading } = useQuery(GET_FEED_ALL, { variables });
+  // const [isEndOfFeed, setEndOfFeed] = React.useState(false);
+  const [result, setResults] = React.useState([]);
   // console.log({ data });
-  const isPageBottom = usePageBottom();
+  // const isPageBottom = usePageBottom();
+  const client = useApolloClient();
+  // const handleUpdateQuery = React.useCallback((prev, { fetchMoreResult }) => {
+  //   console.log({ prev, fetchMoreResult });
+  //   if (fetchMoreResult.posts.length === 0) {
+  //     setEndOfFeed(true);
+  //     return prev;
+  //   }
+  //   return { posts: [...prev.posts, ...fetchMoreResult.posts] };
+  // }, []);
 
-  const handleUpdateQuery = React.useCallback((prev, { fetchMoreResult }) => {
-    console.log({ prev, fetchMoreResult });
-    if (fetchMoreResult.posts.length === 0) {
-      setEndOfFeed(true);
-      return prev;
-    }
-    return { posts: [...prev.posts, ...fetchMoreResult.posts] };
-  }, []);
+  // React.useEffect(() => {
+  //   if (!isPageBottom || !data || isEndOfFeed) {
+  //     console.log("here", data);
+  //     return;
+  //   }
+  //   // const variables = { limit: 2, feedIds, lastTimestamp };
+  //   const variables = {
+  //     type: active?.blog ? "blog" : active?.interview ? "interview" : "compi",
+  //   };
+  //   console.log({ variables });
+  //   fetchMore({
+  //     variables,
+  //     updateQuery: handleUpdateQuery,
+  //   });
+  // }, [isPageBottom, data, fetchMore, handleUpdateQuery, active, isEndOfFeed]);
 
   React.useEffect(() => {
-    if (!isPageBottom || !data || isEndOfFeed) return;
-    // const variables = { limit: 2, feedIds, lastTimestamp };
-    const variables = {};
-    fetchMore({
-      variables,
-      updateQuery: handleUpdateQuery,
-    });
-  }, [isPageBottom, data, fetchMore, handleUpdateQuery, feedIds, isEndOfFeed]);
+    setResults([]);
+    async function fetchPosts() {
+      const { data } = await client.query({
+        query: GET_FEED_ALL,
+        variables: {
+          type: active?.blog
+            ? "blog"
+            : active?.interview
+            ? "interview"
+            : "compi",
+        },
+      });
+      setResults(data);
+    }
+    fetchPosts();
+  }, [active, client]);
 
-  // let loading = false;
   if (loading) return <LoadingScreen />;
 
   return (
@@ -101,7 +121,7 @@ function FeedPage() {
           </div>
         </div>
         <div>
-          {data?.posts.map((post, index) => (
+          {result?.posts?.map((post, index) => (
             <React.Suspense key={post.id} fallback={<FeedPostSkeleton />}>
               <FeedPost index={index} post={post} />
             </React.Suspense>

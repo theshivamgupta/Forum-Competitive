@@ -225,8 +225,8 @@ export const GET_FEED = gql`
 `;
 
 export const GET_FEED_ALL = gql`
-  query getFeedAll {
-    posts(order_by: { created_at: desc }) {
+  query getFeedAll($type: String!) {
+    posts(order_by: { created_at: desc }, where: { type: { _eq: $type } }) {
       id
       caption
       created_at

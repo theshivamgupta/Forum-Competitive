@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
 // import { defaultCurrentUser } from "../data";
-import ProfilePicture from "../components/shared/ProfilePicture";
+// import ProfilePicture from "../components/shared/ProfilePicture";
 import { UserContext } from "../App";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_EDIT_USER_PROFILE } from "../graphql/queries";
@@ -34,6 +34,12 @@ import { AuthContext } from "../auth";
 import handleImageUpload from "../utils/handleImageUpload";
 import { fetchUserhandle } from "../utils/api/CodeForces";
 import Alert from "@material-ui/lab/Alert";
+import Loadable from "react-loadable";
+
+const AsyncProfilePicture = Loadable({
+  loader: () => import("../components/shared/ProfilePicture"),
+  loading: LoadingScreen,
+});
 
 function EditProfilePage({ history }) {
   const { currentUserId } = React.useContext(UserContext);
@@ -234,7 +240,7 @@ function ChangeHandle({ user }) {
       </Snackbar>
       <section className={classes.container}>
         <div className={classes.pictureSectionItem}>
-          <ProfilePicture size={38} image={profileImage} />
+          <AsyncProfilePicture size={38} image={profileImage} />
           <div className={classes.justifySelfStart}>
             <Typography className={classes.typography}>
               {user.username}
@@ -325,7 +331,7 @@ function EditUserInfo({ user }) {
   return (
     <section className={classes.container}>
       <div className={classes.pictureSectionItem}>
-        <ProfilePicture size={38} image={profileImage} />
+        <AsyncProfilePicture size={38} image={profileImage} />
         <div className={classes.justifySelfStart}>
           <Typography className={classes.typography}>
             {user.username}
@@ -495,7 +501,7 @@ function ChangePassword({ user }) {
   return (
     <section className={classes.container}>
       <div className={classes.pictureSectionItem}>
-        <ProfilePicture size={38} image={profileImage} />
+        <AsyncProfilePicture size={38} image={profileImage} />
         <div className={classes.justifySelfStart}>
           <Typography className={classes.typography}>
             {user.username}
