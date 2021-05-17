@@ -9,13 +9,13 @@ import {
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useStackCardStyles } from "../../styles";
+// import { useStackCardStyles } from "../../styles";
 import { formatDateToNow } from "../../utils/formatDate";
 import "../../assets/StackCard.css";
 
 function StackCard({ post, user }) {
   const likeCount = post?.likes_aggregate.aggregate?.count;
-  const classes = useStackCardStyles();
+  // const classes = useStackCardStyles();
 
   return (
     <div>
@@ -61,24 +61,35 @@ function StackCard({ post, user }) {
             sm={8}
           >
             <Divider
-              className={classes.divider}
+              // className={classes.divider}
+              className="divider-profile"
               orientation="vertical"
               flexItem
               light
             />
-            <div className={classes.mainpost}>
+            <div
+              // className={classes.mainpost}
+              className="mainpost-profile"
+            >
               <Link to={`/p/${post?.id}`}>
-                <Typography className={classes.content}>
+                <Typography
+                  // className={classes.content}
+                  className="content-profile"
+                >
                   {post?.media}
                 </Typography>
-                <Typography className={classes.timestamp}>
+                <Typography
+                  // className={classes.timestamp}
+                  className="timestamp-profile"
+                >
                   Posted {formatDateToNow(post?.created_at)}
                 </Typography>
               </Link>
             </div>
             <Hidden smDown>
               <Divider
-                className={classes.divider}
+                // className={classes.divider}
+                className="divider-profile"
                 orientation="vertical"
                 flexItem
                 light
@@ -86,9 +97,22 @@ function StackCard({ post, user }) {
             </Hidden>
           </Grid>
           <Hidden smDown>
-            <Grid className={classes.likes} item sm={2}>
-              <FavoriteIcon className={classes.likeicon} />
-              <Typography className={classes.likecount}>{likeCount}</Typography>
+            <Grid
+              // className={classes.likes}
+              className="likes-profile"
+              item
+              sm={2}
+            >
+              <FavoriteIcon
+                // className={classes.likeicon}
+                className="likeicon-profile"
+              />
+              <Typography
+                // className={classes.likecount}
+                className="likecount-profile"
+              >
+                {likeCount}
+              </Typography>
             </Grid>
           </Hidden>
         </Grid>

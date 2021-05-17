@@ -18,7 +18,7 @@
   flex-wrap: wrap;
   transition: 0.15s;
   cursor: pointer;
-  /* margin-top: 12px; */
+  margin-top: 12px;
 }
 
 .usericon-profile:hover {
@@ -46,6 +46,52 @@
   color: #f23a3a;
 }
 
+.divider-profile {
+  height: 100px;
+  align-self: center;
+}
+
+.mainpost-profile {
+  display: flex;
+  width: 90%;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content-profile {
+  font-size: 130%;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.timestamp-profile {
+  font-size: 90%;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: #7e7e7e;
+}
+
+.likes-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.likeicon-profile {
+  color: #f23a3a;
+  height: 30px;
+  width: 30px;
+}
+
+.likecount-profile {
+  font-weight: 700;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 85%;
+}
+
 @media (max-width: 768px) {
   .stackitem-profile {
     height: 100px;
@@ -53,5 +99,11 @@
   .avatar-profile {
     height: 43px;
     width: 43px;
+  }
+  .content-profile {
+    font-size: 115%;
+  }
+  .timestamp-profile {
+    font-size: 80%;
   }
 }
