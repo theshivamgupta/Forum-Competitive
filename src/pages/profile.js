@@ -212,10 +212,15 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
 
   return (
     <div>
-      <Paper className={classes.covercard}>
-        <Grid className={classes.cover} container>
+      <Paper className="covercard">
+        <Grid
+          // className={classes.cover}
+          className="cover-main"
+          container
+        >
           <Grid
-            className={classes.coverimg}
+            // className={classes.coverimg}
+            className="coverimg-main"
             item
             xs={12}
             onClick={() => {
@@ -234,38 +239,46 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
               onChange={handleUpdateProfilePic}
             />
           )}
-          <Grid className={classes.profile} item xs={12}>
+          <Grid
+            // className={classes.profile}
+            className="profile-main"
+            item
+            xs={12}
+          >
             <Grid style={{ height: "100%", width: "100%" }} container>
-              <Grid
-                // className={classes.profilepic}
-                // className="flex justify-center relative md:justify-end"
-                className="main-profile-image-grid"
-                item
-                xs={4}
-                md={3}
-              >
+              <Grid className="main-profile-image-grid" item xs={4} md={3}>
                 <Avatar
-                  // className={classes.profileimg}
-                  // className="flex items-start justify-center w-36 h-36 md:w-32 md:h-32"
-                  // style={{ top: "-65px", border: "5px solid #ededed" }}
                   className="main-profile-image"
                   alt="John Doe"
                   src={user.profile_image}
                 ></Avatar>
               </Grid>
-              <Grid className={classes.profileinfo} item xs={7} md={6}>
+              <Grid
+                // className={classes.profileinfo}
+                className="profileinfo-main"
+                item
+                xs={7}
+                md={6}
+              >
                 <Grid container style={{ width: "100%", height: "100%" }}>
                   <Grid item xs={12}>
-                    <Typography className={classes.name}>
+                    <Typography
+                      // className={classes.name}
+                      className="name-main"
+                    >
                       {user?.name}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography className={classes.username}>
+                    <Typography
+                      // className={classes.username}
+                      className="username-main"
+                    >
                       {user?.username}
                     </Typography>
                     <Typography
-                      className={classes.codeforces}
+                      // className={classes.codeforces}
+                      className="codeforces-main"
                       style={{
                         color: `${color(user?.codeforces_rating)}`,
                         fontWeight: "700",
