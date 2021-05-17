@@ -288,12 +288,26 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography className={classes.bio}>{user?.bio}</Typography>
+                    <Typography
+                      // className={classes.bio}
+                      className="bio-main"
+                    >
+                      {user?.bio}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid className={classes.coverButtons} item xs={1} md={3}>
-                <div className={classes.editprofile}>
+              <Grid
+                // className={classes.coverButtons}
+                className="coverButtons-main"
+                item
+                xs={1}
+                md={3}
+              >
+                <div
+                  // className={classes.editprofile}
+                  className="editprofile-main"
+                >
                   <Hidden smDown>
                     {isOwner ? (
                       <Link to="/accounts/edit">
@@ -312,7 +326,8 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
                   <div onClick={() => setShowOption((prev) => !prev)}>
                     <svg
                       aria-label="Options"
-                      className={classes.settings}
+                      // className={classes.settings}
+                      className="settings-main"
                       fill="#262626"
                       height="24"
                       viewBox="0 0 48 48"
@@ -329,7 +344,12 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item className={classes.navigation} xs={12}>
+          <Grid
+            item
+            // className={classes.navigation}
+            className="navigation-main"
+            xs={12}
+          >
             <Tabs
               value={value}
               onChange={handleChange}
@@ -338,7 +358,8 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
               centered
             >
               <Tab
-                className={classes.navtab}
+                // className={classes.navtab}
+                className="navtab-main"
                 label="Profile"
                 onClick={() => {
                   setActiveTab((prev) => ({
@@ -350,7 +371,8 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
                 }}
               />
               <Tab
-                className={classes.navtab}
+                // className={classes.navtab}
+                className="navtab-main"
                 label="Followers"
                 onClick={() => {
                   setActiveTab((prev) => ({
@@ -362,7 +384,8 @@ function ProfileMainCard({ user, isOwner, setActiveTab }) {
                 }}
               />
               <Tab
-                className={classes.navtab}
+                // className={classes.navtab}
+                className="navtab-main"
                 label="Following"
                 onClick={() => {
                   setActiveTab((prev) => ({
@@ -394,21 +417,21 @@ function ProfileSideCard({ user }) {
 
   return (
     <div>
-      <Paper className="sidecard" elevation={3}>
-        <Grid className="frienddata" container spacing={1}>
-          <Grid className="data" item xs={3}>
-            <Typography className="friends">Followers</Typography>
+      <Paper className="sidecard-side" elevation={3}>
+        <Grid className="frienddata-side" container spacing={1}>
+          <Grid className="data-side" item xs={3}>
+            <Typography className="friends-side">Followers</Typography>
           </Grid>
           <Grid className="data" item xs={3}>
-            <Typography className="number">
+            <Typography className="number-side">
               {user[`followers_aggregate`]?.aggregate?.count}
             </Typography>
           </Grid>
           <Grid className="data" item xs={3}>
-            <Typography className="friends">Following</Typography>
+            <Typography className="friends-side">Following</Typography>
           </Grid>
           <Grid className="data" item xs={3}>
-            <Typography className="number">
+            <Typography className="number-side">
               {user[`followings_aggregate`]?.aggregate?.count}
             </Typography>
           </Grid>

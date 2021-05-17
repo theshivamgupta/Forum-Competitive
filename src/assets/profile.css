@@ -22,3 +22,89 @@
   font-size: 120%;
   color: #4267b2;
 }
+
+.covercard {
+  height: 450px;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 2%;
+}
+
+.cover-main {
+  height: 100%;
+}
+
+.coverimg-main {
+  height: 55%;
+  background-size: cover;
+}
+
+.profile-main {
+  height: 35%;
+}
+
+.main-profile-image-grid {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.main-profile-image {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 150px;
+  height: 150px;
+  top: -65px;
+  border: 5px solid #ededed;
+}
+
+.profileinfo-main {
+  width: 96%;
+  padding: 2%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.name-main {
+  font-weight: 700;
+  width: 100%;
+  font-size: 200%;
+  height: 30px;
+}
+
+.username-main {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 120%;
+  color: #4267b2;
+}
+
+.codeforces-main {
+  display: inline-block;
+  font-weight: 400;
+  font-size: 120%;
+  color: #8d8d8d;
+}
+
+@media (max-width: 768px) {
+  .main-profile-image {
+    width: 120px;
+    height: 120px;
+    top: -60px;
+  }
+
+  .main-profile-image-grid {
+    justify-content: center;
+  }
+
+  .name-main {
+    font-size: 170%;
+  }
+
+  .username-main,
+  .codeforces-main {
+    font-size: 110%;
+  }
+}

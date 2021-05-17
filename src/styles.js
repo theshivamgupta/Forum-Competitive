@@ -1934,7 +1934,7 @@ export const useStackCardStyles = makeStyles((theme) => ({
     height: "100%",
   },
   divider: {
-    height: "80px",
+    height: "100px",
     alignSelf: "center",
   },
   usericon: {

@@ -11,6 +11,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useStackCardStyles } from "../../styles";
 import { formatDateToNow } from "../../utils/formatDate";
+import "../../assets/StackCard.css";
 
 function StackCard({ post, user }) {
   const likeCount = post?.likes_aggregate.aggregate?.count;
@@ -18,21 +19,47 @@ function StackCard({ post, user }) {
 
   return (
     <div>
-      <Paper className={classes.stackitem} elevation={1}>
-        <Grid className={classes.maingrid} container spacing={2}>
-          <Grid className={classes.usericon} item xs={3} sm={2}>
+      <Paper
+        // className={classes.stackitem}
+        className="stackitem-profile"
+        elevation={1}
+      >
+        <Grid
+          // className={classes.maingrid}
+          className="maingrid-profile"
+          container
+          spacing={2}
+        >
+          <Grid
+            // className={classes.usericon}
+            className="usericon-profile"
+            item
+            xs={3}
+            sm={2}
+          >
             <Avatar
-              className={classes.avatar}
+              // className={classes.avatar}
+              className="avatar-profile"
               alt="Remy Sharp"
               src={user?.profile_image}
             />
             <Hidden smDown>
-              <Typography className={classes.user} variant="caption">
+              <Typography
+                // className={classes.user}
+                className="user-profile"
+                variant="caption"
+              >
                 {user?.name}
               </Typography>
             </Hidden>
           </Grid>
-          <Grid className={classes.post} item xs={9} sm={8}>
+          <Grid
+            // className={classes.post}
+            className="post-profile"
+            item
+            xs={9}
+            sm={8}
+          >
             <Divider
               className={classes.divider}
               orientation="vertical"

@@ -63,6 +63,68 @@
   color: #8d8d8d;
 }
 
+.bio-main {
+  font-weight: 400;
+  font-size: 120%;
+  color: #747474;
+}
+
+.coverButtons-main {
+  display: flex;
+  padding: 2%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.editprofile-main {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.settings-main {
+  height: inherit;
+  width: 30px;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.settings-main:hover {
+  transform: rotate(360deg) scale(1.1);
+}
+
+.navigation-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sidecard-side {
+  width: 90%;
+  padding: 5%;
+}
+
+.frienddata-side {
+  width: 100%;
+}
+
+.data-side {
+  display: flex;
+  align-items: center;
+}
+
+.friends-side {
+  display: inline-block;
+  font-weight: 700;
+}
+
+.number-side {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 120%;
+  color: #4267b2;
+}
+
 @media (max-width: 768px) {
   .main-profile-image {
     width: 120px;
@@ -81,5 +143,13 @@
   .username-main,
   .codeforces-main {
     font-size: 110%;
+  }
+
+  .bio-main {
+    font-size: 100%;
+  }
+
+  .navtab-main {
+    font-size: 100%;
   }
 }
