@@ -197,7 +197,7 @@ function AddPostDialog({ handleClose }) {
       <TextField
         id="outlined-full-width"
         label="Title"
-        style={{ padding: 7 }}
+        style={{ marginTop: "60px", padding: 7 }}
         placeholder="Title to your query..."
         fullWidth
         margin="normal"
