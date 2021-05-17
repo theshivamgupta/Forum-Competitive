@@ -242,9 +242,9 @@ function Links({ path }) {
               onClick={handleToggleList}
             >
               {showList ? (
-                <NotificationsActiveIcon />
+                <NotificationsActiveIcon style={{ fill: "black" }} />
               ) : (
-                <NotificationsNoneIcon />
+                <NotificationsNoneIcon style={{ fill: "black" }} />
               )}
             </div>
           </RedTooltip>
