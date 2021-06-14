@@ -15,7 +15,7 @@ const GuestRoute = ({ component: Component, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/accounts/login",
               state: { from: props.location },
             }}
           />
