@@ -12,15 +12,15 @@ import { AuthContext } from "./auth";
 import { useSubscription } from "@apollo/client";
 import { ME } from "./graphql/subscriptions";
 import PrivateRoute from "./auth/PrivateRoute";
-import GuestRoute from "./auth/GuestRoute";
 import Loadable from "react-loadable";
+import LoginPage from "./pages/login";
 
 export const UserContext = React.createContext();
 
-const AsyncLoginPage = Loadable({
-  loader: () => import("./pages/login"),
-  loading: LoadingScreen,
-});
+// const AsyncLoginPage = Loadable({
+//   loader: () => import("./pages/login"),
+//   loading: LoadingScreen,
+// });
 
 const AsyncSignupPage = Loadable({
   loader: () => import("./pages/signup"),
@@ -94,7 +94,7 @@ function App() {
   if (!isAuth) {
     return (
       <Switch>
-        <Route path="/accounts/login" component={AsyncLoginPage} />
+        <Route path="/accounts/login" component={LoginPage} />
         <Route path="/accounts/emailsignup" component={AsyncSignupPage} />
         <Redirect to="/accounts/login" />
       </Switch>
@@ -113,12 +113,8 @@ function App() {
       value={{ me, currentUserId, followingIds, followerIds, feedIds }}
     >
       <Switch location={isModalOpen ? prevLocation.current : location}>
-        <GuestRoute exact path="/accounts/login" component={AsyncLoginPage} />
-        <GuestRoute
-          exact
-          path="/accounts/emailsignup"
-          component={AsyncSignupPage}
-        />
+        <Route exact path="/accounts/login" component={LoginPage} />
+        <Route exact path="/accounts/emailsignup" component={AsyncSignupPage} />
         <PrivateRoute exact path="/t/test" component={AsyncTest} />
         <PrivateRoute exact path="/" component={AsyncFeedPage} />
         <PrivateRoute exact path="/explore" component={AsyncExplorePage} />
@@ -135,7 +131,7 @@ function App() {
         <PrivateRoute exact path="/p/:postId" component={AsyncPostPage} />
         <PrivateRoute path="/accounts/edit" component={AsyncEditProfilePage} />
         <PrivateRoute exact path="/:username" component={AsyncProfilePage} />
-        <GuestRoute path="*" component={AsyncNotFoundPage} />
+        <Route path="*" component={AsyncNotFoundPage} />
       </Switch>
       {isModalOpen && <Route exact path="/p/:postId" component={PostModal} />}
     </UserContext.Provider>

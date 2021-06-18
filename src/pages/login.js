@@ -45,7 +45,7 @@ function LoginPage() {
         input = await getUserEmail(input);
         // console.log({ input });
       }
-      // console.log({ data });
+      console.log({ input }, { password });
       const data = await logInWithEmailAndPassword(input.userEmail, password);
       if (!data?.user?.emailVerified) {
         setVerifyError(true);
@@ -155,7 +155,7 @@ function LoginPage() {
                     InputProps={{
                       endAdornment: hasPassword && (
                         <InputAdornment>
-                          <Button onClick={togglePasswordVisibility}>
+                          <Button onClick={(e) => togglePasswordVisibility(e)}>
                             {showPassword ? "Hide" : "Show"}
                           </Button>
                         </InputAdornment>
@@ -191,7 +191,11 @@ function LoginPage() {
                 </div>
                 <LoginWithFacebook color="secondary" iconColor="blue" />
                 <AuthError error={error} />
-                <Button fullWidth color="secondary" onClick={handleForgetPass}>
+                <Button
+                  fullWidth
+                  color="secondary"
+                  onClick={(e) => handleForgetPass(e)}
+                >
                   <Typography variant="caption">Forgot password?</Typography>
                 </Button>
               </Card>
@@ -234,7 +238,7 @@ export function LoginWithFacebook({ color, variant }) {
   return (
     <>
       <Button
-        onClick={handleLogInWithGoogle}
+        onClick={(e) => handleLogInWithGoogle(e)}
         fullWidth
         color={color}
         variant={variant}

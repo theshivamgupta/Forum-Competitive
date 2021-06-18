@@ -9,7 +9,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import { LoginWithFacebook } from "./login";
-import { Link, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { AuthContext } from "../auth";
 import { useForm } from "react-hook-form";
 import { HighlightOff, CheckCircleOutline } from "@material-ui/icons";
@@ -24,8 +24,9 @@ function SignUpPage() {
     mode: "onBlur",
   });
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
-  const history = useHistory();
+  // const history = useHistory();
   const [error, setError] = React.useState("");
+  const [redirect, setRedirect] = React.useState(false);
   const client = useApolloClient();
 
   async function onSubmit(data) {
@@ -33,7 +34,9 @@ function SignUpPage() {
     try {
       setError("");
       await signUpWithEmailAndPassword(data);
-      setTimeout(() => history.push("/accounts/login"), 0);
+      // setTimeout(() => history.push("/accounts/login"), 0);
+      // history.push("/accounts/login");
+      setRedirect(!redirect);
     } catch (error) {
       console.error("Error signing up", error);
       // setError(error.message);
@@ -70,6 +73,10 @@ function SignUpPage() {
       <CheckCircleOutline style={{ color: "#ccc", height: 30, width: 30 }} />
     </InputAdornment>
   );
+
+  if (redirect) {
+    return <Redirect to="/accounts/login" />;
+  }
 
   return (
     <>
